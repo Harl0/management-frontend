@@ -1,0 +1,4 @@
+login.title=Create Client
+login.form.title=In this prototype please select a user type below:
+error.title=Error
+error.signIn=Please make a selection

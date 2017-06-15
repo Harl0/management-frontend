@@ -1,0 +1,33 @@
+@(title: String)(content: Html)(implicit messages: Messages, request: RequestHeader)
+
+@extraHeadTags = {
+    <link rel="stylesheet" href="/assets/stylesheets/elements.css">
+}
+
+@licenceMessage = {
+    <p>
+        All content is available under the
+        <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3" target="_blank">
+            Open Government Licence v3.0</a>,
+        except where otherwise stated
+    </p>
+}
+
+@govuk_template(
+    title = Some(Messages(title)),
+    bodyClasses = None,
+    htmlLang = None
+)(
+    head = extraHeadTags,
+    bodyStart = new Html(""),
+    bodyEnd = new Html(""),
+    insideHeader = new Html(""),
+    afterHeader = new Html(""),
+    footerTop = new Html(""),
+    footerLinks = new Html(""),
+    skipLinkMessage = None,
+    licenceMessage = licenceMessage,
+    crownCopyrightMessage = None
+) {
+    @content
+}

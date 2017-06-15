@@ -1,0 +1,29 @@
+@(error: String, error_description: String, state: String)(implicit messages: Messages, request: RequestHeader)
+@main("error.title") {
+    <main id="content">
+        <div class="phase-banner">
+            <p>
+                <strong class="phase-tag">ALPHA</strong>
+                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+            </p>
+        </div>
+        <h1 class="heading-xlarge">@Messages("error.title")</h1>
+
+        <div class="grid-row">
+            <div class="column-full">
+                <div class="form-group">
+                    <fieldset>
+                        <p>This screen needs to be designed!!</p>
+                        <p>It will be shown when a Govt Dept supplies an invalid Client ID or Redirect URI to the OIDC authorize endpoint.</p>
+                        <p>In this scenario the GAP/BAS application is unable to respond to the Govt Dept application so the authorisation journey has hit a dead end.</p>
+                        <p>The error reported back from GAP/BAS is as follows:</p>
+                        <br/>
+                        <p>Error: @error</p>
+                        <p>Error Description: @error_description</p>
+                        <p>State: @state</p>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </main>
+}
