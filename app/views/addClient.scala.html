@@ -1,70 +1,65 @@
 @(inputFields: List[ClientInputFields], clientForm: Form[Client])(implicit messages: Messages, request: RequestHeader)
 
 @main("login.title") {
-    <main id="content">
-        <div class="phase-banner">
-            <p>
-                <strong class="phase-tag">ALPHA</strong>
-                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
-            </p>
-        </div>
+<main id="content">
+    <div class="phase-banner">
+        <p>
+            <strong class="phase-tag">ALPHA</strong>
+            <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+        </p>
+    </div>
 
-        <h1 class="heading-xlarge">@Messages("login.title")</h1>
-        <div class="grid-row">
-            <div class="column-full">
-                @helper.form(routes.ApplicationController.postCreateClient()) {
-                    @helper.CSRF.formField
-                    <div class="form-group">
-                        <fieldset>
-                            <legend id="BAS-login-form">
+    <h1 class="heading-xlarge">@Messages("login.title")</h1>
+    <div class="grid-row">
+        <div class="column-full">
+            @helper.form(routes.ApplicationController.postCreateClient()) {
+            @helper.CSRF.formField
+            <div class="form-group">
+                <fieldset>
+                    <legend id="BAS-login-form">
 
-                                <span id="signin-form-title-text" class="form-label-bold">
-                                @Messages("login.form.title")
-                                </span>
+                        @if(clientForm.hasErrors) {
 
-                                @if(clientForm.hasErrors) {
+                        <div class="grid-row">
+                            <div class="column-two-thirds">
 
-                                    <div class="grid-row">
-                                        <div class="column-two-thirds">
+                                <div class="error-summary" role="group" aria-labelledby="error-summary-login-form"
+                                     tabindex="-1">
 
-                                            <div class="error-summary" role="group" aria-labelledby="error-summary-login-form" tabindex="-1">
-
-                                                <h1 class="heading-medium error-summary-heading" id="error-summary-login-form-heading">
-                                                    This form has errors
-                                                </h1>
-                                                <p>
-                                                    Please correct the following:
-                                                </p>
-                                            </div>
-                                            <div class="form-group form-group-error">
-                                                <ul>
-                                                @clientForm.errors.map { error =>
-                                                    <li><span class="error-message">@Messages("error.signIn")</span></li>
-                                                }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-
-                            </legend>
-                            @for(field <- inputFields) {
-                            <div class="form-group">
-                                <label class="form-label-bold" id=@field.lableId for=@field.fieldText>
-                                    @field.fieldTitle
-                                    <span class="form-hint">
-                                    @field.hintText
-                                </span>
-                                </label>
-                                <input class="form-control" id=@field.id name=
-                                        @field.fieldText type="text">
+                                    <h1 class="heading-medium error-summary-heading"
+                                        id="error-summary-login-form-heading">
+                                        This form has errors
+                                    </h1>
+                                    <p>
+                                        Please correct the following:
+                                    </p>
+                                </div>
+                                <div class="form-group form-group-error">
+                                    <ul>
+                                        @clientForm.errors.map { error =>
+                                        <li><span class="error-message">@Messages("error.signIn")</span></li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
-                            }
-                        </fieldset>
+                        </div>
+                        }
+
+                    </legend>
+                    @for(field <- inputFields) {
+                    <div class="form-group">
+                        <label class="form-label-bold" id=@field.lableId for=@field.fieldText>
+                            @field.fieldTitle
+                        </label>
+                        <input class="form-control" id=@field.id name=
+                                @field.fieldText type="text">
                     </div>
-                    <input class="button" type="submit" value="Submit">
                     }
+                </fieldset>
             </div>
+            <input class="button" type="submit" value="Submit">
+            }
         </div>
-    </main>
+    </div>
+</main>
 }
