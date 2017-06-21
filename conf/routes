@@ -1,2 +1,3 @@
 
-->      /client        app.Routes
+->      /client             app.Routes
+->      /healthcheck        healthcheck.Routes
