@@ -1,13 +1,17 @@
 package models
 
+import play.api.libs.json._
+
 /**
   * Created by jason on 24/05/17.
   */
-case class Client(
-                   department_name: String,
-                   redirectURIs: String,
-                   imageURIs: Option[String] = Some(""),
-                   contactname: Option[String] = Some(""),
-                   contactDetails: Option[String] = Some(""),
-                   serviceStartDate: Option[String] = Some("")
-                 )
+case class Client(clientName: String,
+                  redirectURIs: String,
+                  imageURI: Option[String] = None,
+                  contactName: Option[String] = None,
+                  contactDetails: Option[String] = None,
+                  serviceStartDate: Option[String] = None)
+
+object Client {
+  implicit val clientRegisterFormat = Json.format[Client]
+}

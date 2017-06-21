@@ -10,9 +10,9 @@ import utils.Constants._
 object Forms {
 
   val clientForm = Form(mapping(
-    "departmentName" -> nonEmptyText,
+    "clientName" -> nonEmptyText,
     "redirectURIs" -> nonEmptyText,
-    "imageURIs" -> optional(text),
+    "imageURI" -> optional(text),
     "contactName" -> optional(text),
     "contactDetails" -> optional(text),
     "serviceStartDate" -> optional(text)
@@ -20,9 +20,9 @@ object Forms {
   )(Client.apply)(Client.unapply))
 
   val clients = List(
-    ClientInputFields("Department Name", "departmentName", "deparmentTextHint"),
+    ClientInputFields("Department Name", "clientName", "deparmentTextHint"),
     ClientInputFields("Redirect URIs", "redirectURIs", "redirectURIsHint"),
-    ClientInputFields("Image URIs", "imageURIs", "imageURIsHint"),
+    ClientInputFields("Image URIs", "imageURI", "imageURIsHint"),
     ClientInputFields("Contact Name", "contactName", "contactNameHint"),
     ClientInputFields("Contact Details", "contactDetails", "contactDetailsHint"),
     ClientInputFields("Service Start Date", "serviceStartDate", "serviceStartDateHint")

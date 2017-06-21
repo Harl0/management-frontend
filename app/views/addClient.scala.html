@@ -12,8 +12,6 @@
         <h1 class="heading-xlarge">@Messages("login.title")</h1>
         <div class="grid-row">
             <div class="column-full">
-                <p>In the real world this would be requesting the Gateway username and password.</p>
-
                 @helper.form(routes.ApplicationController.postCreateClient()) {
                     @helper.CSRF.formField
                     <div class="form-group">
