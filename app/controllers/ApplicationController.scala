@@ -2,9 +2,9 @@ package controllers
 
 import com.google.inject.Inject
 import config.AppConfig
-import models.{Client, ClientRegister}
 import models.Client._
 import models.Forms.{clientForm, clients}
+import models.{Client, ClientRegister}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
@@ -38,20 +38,17 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig) extends I
         }
       },
       data => {
-        createClient(data)
+        ws
+          .url(s"${config.clientUrl}/create")
+          .withHttpHeaders("Accept" -> "application/json")
+          .post(Json.toJson(data))
+          .map { x =>
+            val cred = Json.fromJson[ClientRegister](x.json).asOpt
+            Ok(views.html.addClientConfirmation(cred.get))
+          }.recover {
+          case e => Ok(views.html.error())
+        }
       }
     )
-  }
-
-  def createClient(data: Client)(implicit req: RequestHeader): Future[Result] = {
-    //TODO call client-private passing params to create API
-
-    ws
-      .url(s"${config.clientUrl}/create")
-      .withHttpHeaders("Accept" -> "application/json")
-      .post(Json.toJson(data))
-      .map { x =>
-        val cred = Json.fromJson[ClientRegister](x.json).asOpt
-        Ok(views.html.addClientConfirmation(cred.get))      }
   }
 }

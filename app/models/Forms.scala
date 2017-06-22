@@ -10,21 +10,20 @@ import utils.Constants._
 object Forms {
 
   val clientForm = Form(mapping(
-    "clientName" -> nonEmptyText,
-    "redirect_uri" -> nonEmptyText,
+    "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
+    "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
     "imageURI" -> optional(text),
     "contactName" -> optional(text),
     "contactDetails" -> optional(text),
-    "serviceStartDate" -> optional(text)
-
+    "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
   )(Client.apply)(Client.unapply))
 
   val clients = List(
-    ClientInputFields("Department Name", "clientName", "deparmentTextHint"),
-    ClientInputFields("Redirect URIs", "redirect_uri", "redirectURIsHint"),
-    ClientInputFields("Image URIs", "imageURI", "imageURIsHint"),
-    ClientInputFields("Contact Name", "contactName", "contactNameHint"),
-    ClientInputFields("Contact Details", "contactDetails", "contactDetailsHint"),
-    ClientInputFields("Service Start Date", "serviceStartDate", "serviceStartDateHint")
+    ClientInputFields("Department Name", "clientName", "Mandatory"),
+    ClientInputFields("Redirect URIs", "redirect_uri", "Mandatory"),
+    ClientInputFields("Image URIs", "imageURI", "Optional"),
+    ClientInputFields("Contact Name", "contactName", "Optional"),
+    ClientInputFields("Contact Details", "contactDetails", "Optional"),
+    ClientInputFields("Service Start Date", "serviceStartDate", "Optional - Format dd/MM/yyyy")
   )
 }
