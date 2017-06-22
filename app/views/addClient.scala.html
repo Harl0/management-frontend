@@ -37,7 +37,7 @@
                                 <div class="form-group form-group-error">
                                     <ul>
                                         @clientForm.errors.map { error =>
-                                        <li><span class="error-message">@Messages("error.signIn")</span></li>
+                                        <li><span class="error-message">@Messages(error.message)</span></li>
                                         }
                                     </ul>
                                 </div>
@@ -50,6 +50,9 @@
                     <div class="form-group">
                         <label class="form-label-bold" id=@field.lableId for=@field.fieldText>
                             @field.fieldTitle
+                            <span class="form-hint">
+                                    @field.hintText
+                                </span>
                         </label>
                         <input class="form-control" id=@field.id name=
                                 @field.fieldText type="text">

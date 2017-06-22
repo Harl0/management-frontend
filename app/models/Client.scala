@@ -1,5 +1,7 @@
 package models
 
+import java.time.LocalDate
+
 import play.api.libs.json._
 
 /**
@@ -10,7 +12,7 @@ case class Client(clientName: String,
                   imageURI: Option[String] = None,
                   contactName: Option[String] = None,
                   contactDetails: Option[String] = None,
-                  serviceStartDate: Option[String] = None)
+                  serviceStartDate: Option[LocalDate] = None)
 
 object Client {
   implicit val clientRegisterFormat = Json.format[Client]
