@@ -3,4 +3,4 @@ login.form.title=In this prototype please select a user type below:
 error.title=Error
 error.signIn=Please make a selection
 error.client.creation.department.required=Client Department Required
-error.client.creation.redirectUri.required=Redirect URI Required
+error.client.creation.redirect_uri.required=Redirect URI Required

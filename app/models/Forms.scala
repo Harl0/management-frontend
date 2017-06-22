@@ -11,7 +11,7 @@ object Forms {
 
   val clientForm = Form(mapping(
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
-    "redirectURIs" -> text.verifying("error.client.creation.redirectUri.required", _.nonEmpty),
+    "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
     "imageURI" -> optional(text),
     "contactName" -> optional(text),
     "contactDetails" -> optional(text),
@@ -20,7 +20,7 @@ object Forms {
 
   val clients = List(
     ClientInputFields("Department Name", "clientName", "Mandatory"),
-    ClientInputFields("Redirect URIs", "redirectURIs", "Mandatory"),
+    ClientInputFields("Redirect URIs", "redirect_uri", "Mandatory"),
     ClientInputFields("Image URIs", "imageURI", "Optional"),
     ClientInputFields("Contact Name", "contactName", "Optional"),
     ClientInputFields("Contact Details", "contactDetails", "Optional"),
