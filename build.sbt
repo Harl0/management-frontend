@@ -1,3 +1,4 @@
+
 name := "client-frontend"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
@@ -16,3 +17,13 @@ libraryDependencies ++= Seq(
 coverageEnabled := false
 coverageMinimum := 80
 coverageFailOnMinimum := false
+
+assemblyJarName in assembly := "client-frontend.jar"
+
+mainClass in assembly := Some("play.core.server.ProdServerStart")
+fullClasspath in assembly += Attributed.blank(PlayKeys.playPackageAssets.value)
+
+assemblyMergeStrategy in assembly := {
+  case "play/reference-overrides.conf" => MergeStrategy.concat
+  case x => (assemblyMergeStrategy in assembly).value(x)
+}
