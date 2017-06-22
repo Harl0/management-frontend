@@ -20,7 +20,7 @@ object Forms {
 
   val clients = List(
     ClientInputFields("Department Name", "clientName", "Mandatory"),
-    ClientInputFields("Redirect URIs", "redirect_uri", "Mandatory"),
+    ClientInputFields("Redirect URIs", "redirect_uri", "Mandatory - multiple URIs should be space separated"),
     ClientInputFields("Image URIs", "imageURI", "Optional"),
     ClientInputFields("Contact Name", "contactName", "Optional"),
     ClientInputFields("Contact Details", "contactDetails", "Optional"),
