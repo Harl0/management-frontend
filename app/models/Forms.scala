@@ -11,7 +11,7 @@ object Forms {
 
   val clientForm = Form(mapping(
     "clientName" -> nonEmptyText,
-    "redirectURIs" -> nonEmptyText,
+    "redirect_uri" -> nonEmptyText,
     "imageURI" -> optional(text),
     "contactName" -> optional(text),
     "contactDetails" -> optional(text),
@@ -21,7 +21,7 @@ object Forms {
 
   val clients = List(
     ClientInputFields("Department Name", "clientName", "deparmentTextHint"),
-    ClientInputFields("Redirect URIs", "redirectURIs", "redirectURIsHint"),
+    ClientInputFields("Redirect URIs", "redirect_uri", "redirectURIsHint"),
     ClientInputFields("Image URIs", "imageURI", "imageURIsHint"),
     ClientInputFields("Contact Name", "contactName", "contactNameHint"),
     ClientInputFields("Contact Details", "contactDetails", "contactDetailsHint"),
