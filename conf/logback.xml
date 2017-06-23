@@ -19,7 +19,6 @@
 
     <logger name="akka" level="INFO" />
     <logger name="play" level="ERROR" />
-    <logger name="reactivemongo.api" level="ERROR" />
 
     <root level="TRACE">
         <appender-ref ref="FILE"/>
