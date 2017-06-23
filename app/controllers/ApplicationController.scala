@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import models.Client._
 import models.Forms.{clientForm, clients}
@@ -18,7 +19,8 @@ import scala.concurrent.Future
   * Created by jason on 24/05/17.
   */
 
-class ApplicationController @Inject()(ws: WSClient, config: AppConfig) extends InjectedController with I18nSupport {
+class ApplicationController @Inject()(ws: WSClient, config: AppConfig)
+  extends InjectedController with I18nSupport with LazyLogging {
 
   /**
     * GET   /createClient
@@ -44,9 +46,12 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig) extends I
           .post(Json.toJson(data))
           .map { x =>
             val cred = Json.fromJson[ClientRegister](x.json).asOpt
+            logger.info("new client inserted")
             Ok(views.html.addClientConfirmation(cred.get))
           }.recover {
-          case e => Ok(views.html.error())
+          case e =>
+            logger.error("There was an error in adding client : " + e.getMessage)
+            Ok(views.html.error())
         }
       }
     )

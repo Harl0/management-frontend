@@ -9,6 +9,7 @@ libraryDependencies ++= Seq(
   "org.jsoup" % "jsoup" % "1.10.2" % "test",
   "com.github.tomakehurst" % "wiremock" % "2.5.1" % "test",
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0-RC1" % "test",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
   ws,
   guice
 )
