@@ -1,2 +1,3 @@
 
 ->      /client             app.Routes
+->      /health             health.Routes
