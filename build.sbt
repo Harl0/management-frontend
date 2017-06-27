@@ -1,23 +1,35 @@
+import scoverage.ScoverageKeys
 
 name := "client-frontend"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.12.2"
 
+scalaSource in IntegrationTest := baseDirectory.value / "it"
+
 libraryDependencies ++= Seq(
+  "com.github.tomakehurst" % "wiremock-standalone" % "2.6.0" % IntegrationTest,
   "org.mockito" % "mockito-core" % "1.9.0" % "test",
   "org.jsoup" % "jsoup" % "1.10.2" % "test",
-  "com.github.tomakehurst" % "wiremock" % "2.5.1" % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0-RC1" % "test",
+  "org.scalactic" %% "scalactic" % "3.0.1" % "test, it",
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test, it",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % IntegrationTest,
   ws,
   guice
 )
 
 //SCoverage
-coverageEnabled := false
-coverageMinimum := 80
-coverageFailOnMinimum := false
+lazy val scoverageSettings = {
+  Seq(
+    ScoverageKeys.coverageMinimum := 80,
+    ScoverageKeys.coverageFailOnMinimum := false,
+    ScoverageKeys.coverageHighlighting := true
+  )
+}
+
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
+  .configs(IntegrationTest)
+  .settings(scoverageSettings ++ Defaults.itSettings: _*)
 
 assemblyJarName in assembly := "client-frontend.jar"
 
