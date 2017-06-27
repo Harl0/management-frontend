@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import models.ClientForm._
 import models.ClientRegister
