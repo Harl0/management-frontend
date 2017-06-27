@@ -1,4 +1,4 @@
-package healthcontrollers
+package controllers.health
 
 import play.api.mvc._
 
