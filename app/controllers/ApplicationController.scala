@@ -10,7 +10,6 @@ import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
-import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -31,7 +30,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   /**
     * POST  /postCreateClient
     */
-  def postCreateClient: Action[AnyContent] = Action.async  { implicit request =>
+  def postCreateClient: Action[AnyContent] = Action.async { implicit request =>
     clientForm.bindFromRequest.fold(
       formWithErrors => {
         Future {

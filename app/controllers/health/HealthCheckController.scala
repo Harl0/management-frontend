@@ -1,4 +1,4 @@
-package healthcontrollers
+package controllers.health
 
 import com.google.inject.Inject
 import play.api.mvc._
