@@ -1,1 +1,1 @@
-GET  /               healthcontrollers.HealthCheckController.healthCheck
+GET  /               controllers.health.HealthCheckController.healthCheck
