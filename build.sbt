@@ -13,7 +13,7 @@ libraryDependencies ++= Seq(
   "org.scalactic" %% "scalactic" % "3.0.1" % "test, it",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test, it",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % IntegrationTest,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test, it",
   ws,
   guice
 )
