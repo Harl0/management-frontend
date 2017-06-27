@@ -3,16 +3,14 @@ package controllers
 import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
-import models.Client._
+import models.ClientRegister
 import models.Forms.{clientForm, clients}
-import models.{Client, ClientRegister}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-
-import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.Future
 
 /**
