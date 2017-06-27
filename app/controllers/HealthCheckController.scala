@@ -1,9 +1,12 @@
 package healthcontrollers
 
+import com.google.inject.Inject
 import play.api.mvc._
 
-class HealthCheckController extends InjectedController {
+class HealthCheckController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-  def healthCheck: Action[AnyContent] = Action { Ok }
+  def healthCheck: Action[AnyContent] = Action {
+    Ok
+  }
 
 }

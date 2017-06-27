@@ -1,13 +1,26 @@
 package models
 
+import java.time.LocalDate
+
 import play.api.data.Form
 import play.api.data.Forms._
-import utils.Constants._
+import play.api.libs.json.Json
 
 /**
   * Created by jason on 23/05/17.
   */
-object Forms {
+object ClientForm {
+
+  case class Client(clientName: String,
+                    redirectURIs: String,
+                    imageURI: Option[String] = None,
+                    contactName: Option[String] = None,
+                    contactDetails: Option[String] = None,
+                    serviceStartDate: Option[LocalDate] = None)
+
+  object Client {
+    implicit val clientRegisterFormat = Json.format[Client]
+  }
 
   val clientForm = Form(mapping(
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),

@@ -5,5 +5,5 @@ import play.filters.cors.CORSFilter
 /**
   * Created by jason on 07/06/17.
   */
-class Filters @Inject()(enabledFilters: EnabledFilters, corsFilter: CORSFilter)
-  extends DefaultHttpFilters(enabledFilters.filters :+ corsFilter: _*)
+//class Filters @Inject()(enabledFilters: EnabledFilters, corsFilter: CORSFilter)
+//  extends DefaultHttpFilters(enabledFilters.filters :+ corsFilter: _*)
