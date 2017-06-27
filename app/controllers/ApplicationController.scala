@@ -3,34 +3,34 @@ package controllers
 import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
+import models.ClientForm._
 import models.ClientRegister
-import models.Forms.{clientForm, clients}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
+
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.Future
 
 /**
   * Created by jason on 24/05/17.
   */
 
-class ApplicationController @Inject()(ws: WSClient, config: AppConfig)
-  extends InjectedController with I18nSupport with LazyLogging {
+class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents)
+  extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
     * GET   /createClient
     */
-  def createClient() = Action { implicit request: RequestHeader =>
+  def createClient(): Action[AnyContent] = Action { implicit request: RequestHeader =>
     Ok(views.html.addClient(clients, clientForm))
   }
 
   /**
     * POST  /postCreateClient
     */
-  def postCreateClient = Action.async { implicit request =>
+  def postCreateClient: Action[AnyContent] = Action.async { implicit request =>
     clientForm.bindFromRequest.fold(
       formWithErrors => {
         Future {
