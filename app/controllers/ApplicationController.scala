@@ -3,6 +3,7 @@ package controllers
 import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
+import connectors.ClientConnector
 import models.ClientForm._
 import models.ClientRegister
 import play.api.i18n.I18nSupport
@@ -17,7 +18,7 @@ import scala.concurrent.Future
   * Created by jason on 24/05/17.
   */
 
-class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents)
+class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents, clientConnector: ClientConnector)
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
@@ -53,5 +54,11 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
         }
       }
     )
+  }
+
+  def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
+    clientConnector.getAllClients.map{ x=>
+      Ok(x.body)
+    }
   }
 }
