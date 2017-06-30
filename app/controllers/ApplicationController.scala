@@ -22,6 +22,13 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
+    * GET   /home
+    */
+  def home(): Action[AnyContent] = Action { implicit request: RequestHeader =>
+    Ok(views.html.home())
+  }
+
+  /**
     * GET   /createClient
     */
   def createClient(): Action[AnyContent] = Action { implicit request: RequestHeader =>
@@ -57,8 +64,18 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.getAllClients.map{ x=>
-      Ok(x.body)
+    clientConnector.getAllClients.map { x =>
+      Ok(Json.toJson(x))
+    }.recover {
+      case ex: Exception => InternalServerError
+    }
+  }
+
+  def retrieveAllClientsPage: Action[AnyContent] = Action.async { implicit request =>
+    clientConnector.getAllClients.map { x =>
+      Ok(views.html.listClients(x))
+    }.recover {
+      case ex: Exception => InternalServerError
     }
   }
 }

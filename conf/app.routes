@@ -1,3 +1,4 @@
+GET  /                   controllers.ApplicationController.home
 GET  /create             controllers.ApplicationController.createClient
 POST /create             controllers.ApplicationController.postCreateClient
-GET  /retrieve           controllers.ApplicationController.retrieveAllClients
+GET  /retrieve           controllers.ApplicationController.retrieveAllClientsPage

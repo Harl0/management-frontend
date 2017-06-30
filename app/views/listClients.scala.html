@@ -1,0 +1,49 @@
+@(clients: Seq[Client])(implicit messages: Messages, request: RequestHeader)
+
+@main("create.listAll.title") {
+    <main id="content">
+        <div class="phase-banner">
+            <p>
+                <strong class="phase-tag">ALPHA</strong>
+                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+            </p>
+        </div>
+
+        <div class="breadcrumbs">
+            <ol>
+                <li><a href="@routes.ApplicationController.home">Home</a></li>
+                <li aria-current="page">Client List</li>
+            </ol>
+        </div>
+
+        <h1 class="heading-xlarge">@Messages("create.listAll.title")</h1>
+        <div class="grid-row">
+            <div class="column-full">
+                <table>
+                    <thead>
+                        <th>Name</th>
+                        <th>RedirectURI</th>
+                        <th>Client ID</th>
+                        <th>Client Secret</th>
+                        <th>Image URI</th>
+                        <th>Contact Name</th>
+                        <th>Contact Details</th>
+                    </thead>
+                    <tbody>
+                    @for(c <- clients) {
+                        <tr>
+                            <td>@c.clientName</td>
+                            <td>@c.redirectURIs</td>
+                            <td>@c.clientId</td>
+                            <td>@c.clientSecret</td>
+                            <td>@c.imageURI</td>
+                            <td>@c.contactName</td>
+                            <td>@c.contactDetails</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+}
