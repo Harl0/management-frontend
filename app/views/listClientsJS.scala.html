@@ -1,4 +1,4 @@
-@(client: Clients)(implicit messages: Messages, request: RequestHeader)
+@()(implicit messages: Messages, request: RequestHeader)
 
 @main("create.listAll.title") {
     <main id="content">
@@ -19,21 +19,11 @@
         <h1 class="heading-xlarge">@Messages("create.listAll.title")</h1>
         <div class="grid-row">
             <div class="column-full">
-                <table>
-                    <thead>
-                        <th>Name</th>
-                        <th>RedirectURI</th>
-                        <th>Client ID</th>
-                        <th>Client Secret</th>
-                        <th>Image URI</th>
-                        <th>Contact Name</th>
-                        <th>Contact Details</th>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                <script type="text/javascript" src='@routes.Assets.at("javascript/clients.js")'></script>
             </div>
+            <table id="clientsTable"></table>
+
         </div>
     </main>
 }

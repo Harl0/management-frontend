@@ -1,0 +1,24 @@
+package services
+
+import com.google.inject.Inject
+import connectors.ClientConnector
+import models.Clients
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+/**
+  * Created by jason on 30/06/17.
+  */
+class ClientService @Inject()(clientConnector: ClientConnector){
+
+  def executeGetClients: Future[Clients] = {
+    for {
+      clientResult <- clientConnector.getAllClients
+    } yield {
+      Clients(
+        clientResult
+      )
+    }
+  }
+
+}

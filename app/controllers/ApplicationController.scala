@@ -6,6 +6,7 @@ import config.AppConfig
 import connectors.ClientConnector
 import models.ClientForm._
 import models.ClientRegister
+import services.ClientService
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
@@ -18,7 +19,8 @@ import scala.concurrent.Future
   * Created by jason on 24/05/17.
   */
 
-class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents, clientConnector: ClientConnector)
+class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
+                                      clientConnector: ClientConnector, clientOrchestrator: ClientService)
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
@@ -63,6 +65,10 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
+  def renderRetrieveAllClients(): Action[AnyContent] = Action { implicit request: RequestHeader =>
+    Ok(views.html.listClientsJS())
+  }
+
   def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
     clientConnector.getAllClients.map { x =>
       Ok(Json.toJson(x))
@@ -72,7 +78,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def retrieveAllClientsPage: Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.getAllClients.map { x =>
+    clientOrchestrator.executeGetClients.map { x =>
       Ok(views.html.listClients(x))
     }.recover {
       case ex: Exception => InternalServerError

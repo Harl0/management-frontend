@@ -2,3 +2,7 @@ GET  /                   controllers.ApplicationController.home
 GET  /create             controllers.ApplicationController.createClient
 POST /create             controllers.ApplicationController.postCreateClient
 GET  /retrieve           controllers.ApplicationController.retrieveAllClientsPage
+GET  /retrieveJson       controllers.ApplicationController.renderRetrieveAllClients
+GET  /getClients         controllers.ApplicationController.retrieveAllClients
+
+GET  /BASassets/*file    controllers.Assets.at(path="/public", file)
