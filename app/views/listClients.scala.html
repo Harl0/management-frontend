@@ -1,4 +1,4 @@
-@(client: Clients)(implicit messages: Messages, request: RequestHeader)
+@(client: Seq[Client])(implicit messages: Messages, request: RequestHeader)
 
 @main("create.listAll.title") {
     <main id="content">
@@ -21,16 +21,20 @@
             <div class="column-full">
                 <table>
                     <thead>
-                        <th>Name</th>
-                        <th>RedirectURI</th>
                         <th>Client ID</th>
-                        <th>Client Secret</th>
-                        <th>Image URI</th>
-                        <th>Contact Name</th>
-                        <th>Contact Details</th>
+                        <th>Name</th>
+                        <th>Details</th>
+                        <th>Delete</th>
                     </thead>
                     <tbody>
-
+                    @for(c <- client) {
+                        <tr>
+                            <td>@c.clientId</td>
+                            <td>@c.clientName</td>
+                            <td><a href="@routes.ApplicationController.viewClient(c._id, c.clientName, c.redirectURIs, c.clientId, c.clientSecret)">View</a></td>
+                            <td><a href="@routes.ApplicationController.deleteClient(c._id)">Delete</a></td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>

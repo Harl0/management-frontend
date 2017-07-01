@@ -1,5 +1,6 @@
 // var RESULTS_TABLE = "clientsTable";
 // var table = document.getElementById(RESULTS_TABLE);
+var table = document.getElementById("myTable");
 
 $(document).ready(function () {
 
@@ -19,19 +20,26 @@ $(document).ready(function () {
         //     }
         // })
         $.getJSON('http://mgmt-www/client/getClients', function (data) {
-            // console.log(data.clients[0]._id);
             console.log(data.clients);
+            processResults(data);
+        });
 
+        processResults = function (data) {
+            initTable();
             for (var i = 0; i < data.clients.length; i++) {
-                // tableBuilder(dsesData.stats[i]);
+                var table = document.getElementById("myTable");
 
-                console.log("Working" + i)
+                console.log("Working" + i);
+                var row = table.insertRow(1);
+                var id = row.insertCell(0);
+                var name = row.insertCell(1);
+
+                id.innerHTML = data.clients[i].clientId;
+                name.innerHTML = data.clients[i].clientName;
             }
-            // var row = table.insertRow(-1);
-            // var id = row.insertCell(0);
-            // var name = row.insertCell(1);
-            // var secret = row.insertCell(2);
-            // id.innerHTML = data.clients._id;
+        };
+
+        initTable = function () {
             var table = document.getElementById("myTable");
 
             var header = table.createTHead();
@@ -40,16 +48,8 @@ $(document).ready(function () {
             var clientName = headerRow.insertCell(1);
             ID.innerHTML = "Client ID".bold();
             clientName.innerHTML = "Client Name".bold();
-
-            var row = table.insertRow(1);
-            var id = row.insertCell(0);
-            var name = row.insertCell(1);
-            id.innerHTML = data.clients[0].clientId;
-            name.innerHTML = data.clients[0].clientName;
-        });
+        }
     };
 
-
     reloadClients();
-
 });

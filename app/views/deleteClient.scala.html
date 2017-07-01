@@ -1,0 +1,33 @@
+@(result: String)(implicit messages: Messages, request: RequestHeader)
+
+@main("create.delete.title") {
+    <main id="content">
+        <div class="phase-banner">
+            <p>
+                <strong class="phase-tag">ALPHA</strong>
+                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+            </p>
+        </div>
+
+        <div class="breadcrumbs">
+            <ol>
+                <li><a href="@routes.ApplicationController.home">Home</a></li>
+                <li aria-current="page">Client List</li>
+            </ol>
+        </div>
+
+        <h1 class="heading-xlarge">@Messages("create.delete.title")</h1>
+        <div class="grid-row">
+            <div class="column-full">
+      @if(result == "OK"){
+
+                <p>Delete Successful</p>
+            } else {
+                <p>Delete Un-Successful</p>
+
+            }
+
+            </div>
+        </div>
+    </main>
+}

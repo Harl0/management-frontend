@@ -4,5 +4,6 @@ error.title=Error
 error.signIn=Please make a selection
 error.client.creation.department.required=Client Department Required
 error.client.creation.redirect_uri.required=Redirect URI Required
-create.listAll.title=Client List
+create.listAll.title=Clients
 create.title.home=Client Support
+create.client.details.title=Client Details

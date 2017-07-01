@@ -71,7 +71,6 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
 
   def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
     clientOrchestrator.executeGetClients.map { x =>
-      println("data from connector is " + x)
       Ok(Json.toJson(x))
     }.recover {
       case ex: Exception => InternalServerError
@@ -79,8 +78,22 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def retrieveAllClientsPage: Action[AnyContent] = Action.async { implicit request =>
-    clientOrchestrator.executeGetClients.map { x =>
+    clientConnector.getAllClients.map { x =>
       Ok(views.html.listClients(x))
+    }.recover {
+      case ex: Exception => InternalServerError
+    }
+  }
+
+  def viewClient(_id: String, clientName: String, redirectURIs: String, clientId: String,
+                 clientSecret: String):
+  Action[AnyContent] = Action { implicit request: RequestHeader =>
+    Ok(views.html.viewClient(_id, clientName, redirectURIs, clientId, clientSecret, clientsView, clientForm))
+  }
+
+  def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
+    clientConnector.deleteClient(_id).map { x =>
+      Ok(views.html.deleteClient(x))
     }.recover {
       case ex: Exception => InternalServerError
     }
