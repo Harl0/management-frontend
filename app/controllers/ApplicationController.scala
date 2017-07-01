@@ -70,7 +70,8 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.getAllClients.map { x =>
+    clientOrchestrator.executeGetClients.map { x =>
+      println("data from connector is " + x)
       Ok(Json.toJson(x))
     }.recover {
       case ex: Exception => InternalServerError
