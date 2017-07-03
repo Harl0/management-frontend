@@ -25,6 +25,7 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
 
   def retrieveClientDetail(_id: String): Future[Client]
   = {
+    Logger.info("Sending ID "+_id)
     val request = s"${config.clientUrl}/clientDetail?_id=${_id}"
     ws
       .url(request)

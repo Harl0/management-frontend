@@ -11,27 +11,54 @@ import play.api.libs.json.Json
   */
 object ClientForm {
 
-  case class ClientForm(_id: Option[String],
-                        clientName: String,
-                        redirectURIs: String,
-                        imageURI: Option[String] = None,
-                        contactName: Option[String] = None,
-                        contactDetails: Option[String] = None,
-                        serviceStartDate: Option[LocalDate] = None)
+  case class ClientRegistrationForm(
+                                     clientName: String,
+                                     redirectURIs: String,
+                                     imageURI: Option[String] = None,
+                                     contactName: Option[String] = None,
+                                     contactDetails: Option[String] = None,
+                                     serviceStartDate: Option[LocalDate] = None
+                                   )
 
-  object ClientForm {
-    implicit val clientRegisterFormat = Json.format[ClientForm]
+  object ClientRegistrationForm {
+    implicit val clientRegisterFormat = Json.format[ClientRegistrationForm]
   }
 
-  val clientForm = Form(mapping(
-    "_id" -> optional(text),
+  val clientRegistrationForm = Form(mapping(
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
     "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
     "imageURI" -> optional(text),
     "contactName" -> optional(text),
     "contactDetails" -> optional(text),
     "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
-  )(ClientForm.apply)(ClientForm.unapply))
+  )(ClientRegistrationForm.apply)(ClientRegistrationForm.unapply))
+
+  case class ClientUpdateForm(
+                               _id: String,
+                               clientName: String,
+                               redirectURIs: String,
+                               clientId: String,
+                               clientSecret: String,
+                               imageURI: Option[String] = None,
+                               contactName: Option[String] = None,
+                               contactDetails: Option[String] = None
+                             )
+
+  object ClientUpdateForm {
+    implicit val clientRegisterFormat = Json.format[ClientUpdateForm]
+  }
+
+  val clientUpdateForm = Form(mapping(
+    "_id" -> text.verifying("_id is required", _.nonEmpty),
+    "clientName" -> text.verifying("Client Name is requried", _.nonEmpty),
+    "redirectURIs" -> text.verifying("redirectURIs is required", _.nonEmpty),
+    "clientId" -> text.verifying("clientID is required", _.nonEmpty),
+    "clientSecret" -> text.verifying("clientSecret is required", _.nonEmpty),
+    "imageURI" -> optional(text),
+    "contactName" -> optional(text),
+    "contactDetails" -> optional(text)
+//    "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
+  )(ClientUpdateForm.apply)(ClientUpdateForm.unapply))
 
   val clients = List(
     ClientInputFields("Department Name", "clientName", "Mandatory"),

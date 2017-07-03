@@ -34,14 +34,15 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     * GET   /createClient
     */
   def createClient(): Action[AnyContent] = Action { implicit request: RequestHeader =>
-    Ok(views.html.createClient(clients, clientForm))
+    Ok(views.html.createClient(clients, clientRegistrationForm))
   }
 
   /**
     * POST  /postCreateClient
     */
   def postCreateClient: Action[AnyContent] = Action.async { implicit request =>
-    clientForm.bindFromRequest.fold(
+
+    clientRegistrationForm.bindFromRequest.fold(
       formWithErrors => {
         Future {
           BadRequest(views.html.createClient(clients, formWithErrors))
@@ -89,35 +90,38 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   def retrieveClientDetail(_id: String): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
     clientConnector.retrieveClientDetail(_id).map {
       clientDetail =>
-        Ok(views.html.viewClient(clientDetail, clientsView, clientForm))
+        Ok(views.html.viewClient(clientDetail, clientsView, clientUpdateForm))
     }.recover {
       case ex: Exception => InternalServerError
     }
   }
 
-  def postUpdateClient: Action[AnyContent] = Action.async { implicit request =>   clientForm.bindFromRequest.fold(
-    formWithErrors => {
-      Future {
-        BadRequest(views.html.createClient(clients, formWithErrors))
+  def postUpdateClient: Action[AnyContent] = Action.async { implicit request =>
+    clientUpdateForm.bindFromRequest.fold(
+      formWithErrors => {
+        val id = clientUpdateForm.data.get("_id").get
+        println(">>>>>>>>>>>>>.. Sending form data "+ clientUpdateForm)
+        clientConnector.retrieveClientDetail(id) map { l =>
+          BadRequest(views.html.viewClient(l, clientsView, formWithErrors))
+        }
+      },
+      data => {
+        logger.info("Sending: " + Json.toJson(data))
+        ws
+          .url(s"${config.clientUrl}/update")
+          .withHttpHeaders("Accept" -> "application/json")
+          .post(Json.toJson(data))
+          .map { x =>
+            val data = Json.fromJson[Client](x.json).asOpt
+            logger.info("Client updated!")
+            Ok(views.html.viewClient(data.get, clientsView, clientUpdateForm))
+          }.recover {
+          case e =>
+            logger.error("There was an error updating client : " + e.getMessage)
+            Ok(views.html.error())
+        }
       }
-    },
-    data => {
-      logger.info("Sending: " + Json.toJson(data))
-      ws
-        .url(s"${config.clientUrl}/create")
-        .withHttpHeaders("Accept" -> "application/json")
-        .post(Json.toJson(data))
-        .map { x =>
-          val cred = Json.fromJson[ClientRegister](x.json).asOpt
-          logger.info("new client inserted")
-          Ok(views.html.addClientConfirmation(cred.get))
-        }.recover {
-        case e =>
-          logger.error("There was an error in adding client : " + e.getMessage)
-          Ok(views.html.error())
-      }
-    }
-  )
+    )
   }
 
   def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
