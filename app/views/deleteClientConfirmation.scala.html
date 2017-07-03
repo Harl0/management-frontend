@@ -1,0 +1,42 @@
+@(client: Client)(implicit messages: Messages, request: RequestHeader)
+
+@main("login.title") {
+
+<main id="content">
+    <div class="phase-banner">
+        <p>
+            <strong class="phase-tag">ALPHA</strong>
+            <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+        </p>
+    </div>
+    <a href="@routes.ApplicationController.createClient()" class="link-back">Back</a>
+
+    <h1 class="heading-xlarge">@Messages("login.title")</h1>
+    <div class="grid-row">
+        <div class="column-full">
+
+            <div class="form-group">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="form-label-bold">
+                            Client ID
+                        </label>
+                        <label class="form-label" id = "clientID">
+                            @client.clientId
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label-bold">
+                            Client Secret
+                        </label>
+                        <label class="form-label" id = "clientSecret">
+                            @client.clientSecret
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+</main>
+}

@@ -31,7 +31,7 @@
                         <tr>
                             <td>@c.clientId</td>
                             <td>@c.clientName</td>
-                            <td><a href="@routes.ApplicationController.viewClient(c._id, c.clientName, c.redirectURIs, c.clientId, c.clientSecret)">View</a></td>
+                            <td><a href="@routes.ApplicationController.viewClient(c._id, c.clientName, c.redirectURIs, c.clientId, c.clientSecret, c.imageURI.getOrElse(""), c.contactName.getOrElse(""), c.contactDetails.getOrElse(""))">View</a></td>
                             <td><a href="@routes.ApplicationController.deleteClient(c._id)">Delete</a></td>
                         </tr>
                     }

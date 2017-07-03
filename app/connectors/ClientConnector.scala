@@ -25,29 +25,13 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
 
   def deleteClient(_id: String): Future[String]
   = {
-
-    val params = getParamMap(_id)
+    val request = s"${config.clientUrl}/delete?_id=${_id}"
     ws
-      .url(s"${config.clientUrl}/delete/${params}")
+      .url(request)
       .get().map {
       case res if res.status == 200 => print("received" + res.body); "Ok"
       case res if res.status != 200 => print("received" + res.status + "" + res.body); "None 200"
     }.recover { case e => Logger.info("Unable to retrieve data"); "Not Ok" }
-  }
-
-  private def getParamMap(_id: String): Map[String, Seq[String]] = {
-    val mmSeq: MutableMap[String, Seq[String]] = MutableMap()
-
-    addParamSeq(mmSeq, Some(_id), "_id")
-    mmSeq.toMap
-
-  }
-
-
-  private def addParamSeq(mm: MutableMap[String, Seq[String]], param: Option[String], key: String) = {
-    if (param.isDefined && !param.get.toUpperCase.startsWith("X")) {
-      mm.put(key, Seq(param.getOrElse("")))
-    }
   }
 
 }

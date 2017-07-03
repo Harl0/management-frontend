@@ -86,9 +86,12 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def viewClient(_id: String, clientName: String, redirectURIs: String, clientId: String,
-                 clientSecret: String):
+                 clientSecret: String, imageURI: String, contactName: String, contactDetails: String):
   Action[AnyContent] = Action { implicit request: RequestHeader =>
-    Ok(views.html.viewClient(_id, clientName, redirectURIs, clientId, clientSecret, clientsView, clientForm))
+    import models.Client
+    val newClient = Client(_id, clientName, redirectURIs, clientId, clientSecret, Some(imageURI), Some(contactName), Some(contactDetails))
+
+    Ok(views.html.viewClient(newClient, clientsView, clientForm))
   }
 
   def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>

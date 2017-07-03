@@ -1,9 +1,5 @@
 @(
-        _id: String,
-        clientName: String,
-        redirectURIs: String,
-        clientId: String,
-        clientSecret: String,
+       client: Client,
         inputFields: List[ClientInputFields],
         form: Form[ClientForm.Client])(implicit messages: Messages, request: RequestHeader)
 
@@ -66,7 +62,7 @@
                                         MongoDB _id Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=_id name="_id" value="@_id" type="text">
+                                <input class="form-control" id=_id name="_id" value="@client._id" type="text">
                             </div>
                             <div class="form-group">
                                 <label class="form-label-bold" id=clientName for=ClientName>
@@ -75,7 +71,7 @@
                                         Client Name Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=clientName name="clientName" value="@clientName" type="text">
+                                <input class="form-control" id=clientName name="clientName" value="@client.clientName" type="text">
                             </div>
                             <div class="form-group">
                                 <label class="form-label-bold" id=clientID for=ClientID>
@@ -84,7 +80,7 @@
                                         Client ID Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=clientID name="Client ID" value="@clientId" type="text">
+                                <input class="form-control" id=clientID name="Client ID" value="@client.clientId" type="text">
                             </div>
 
                             <div class="form-group">
@@ -94,7 +90,7 @@
                                         RedirectURIs Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=redirectURIs name="redirectURIs" value="@redirectURIs" type="text">
+                                <input class="form-control" id=redirectURIs name="redirectURIs" value="@client.redirectURIs" type="text">
                             </div>
 
                             <div class="form-group">
@@ -104,7 +100,7 @@
                                         ClientID Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=clientID name="clientID" value="@clientId" type="text">
+                                <input class="form-control" id=clientID name="clientID" value="@client.clientId" type="text">
                             </div>
 
                             <div class="form-group">
@@ -114,7 +110,37 @@
                                         ClientSecret Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=clientSecret name="clientSecret" value="@clientSecret" type="text">
+                                <input class="form-control" id=clientSecret name="clientSecret" value="@client.clientSecret" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label-bold" id=imageURI for=ImageURI>
+                                    ImageURI
+                                    <span class="form-hint">
+                                        ImageURI Hint
+                                    </span>
+                                </label>
+                                <input class="form-control" id=imageURI name="imageURI" value="@client.imageURI" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label-bold" id=contactName for=ContactName>
+                                    ContactName
+                                    <span class="form-hint">
+                                        ContactName Hint
+                                    </span>
+                                </label>
+                                <input class="form-control" id=contactName name="contactName" value="@client.contactName" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label-bold" id=contactDetails for=ContactDetails>
+                                    ContactDetails
+                                    <span class="form-hint">
+                                        ContactDetails Hint
+                                    </span>
+                                </label>
+                                <input class="form-control" id=contactDetails name="contactDetails" value="@client.contactDetails" type="text">
                             </div>
 
                         </fieldset>
