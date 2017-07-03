@@ -48,6 +48,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
         }
       },
       data => {
+        logger.info("Sending: "+Json.toJson(data))
         ws
           .url(s"${config.clientUrl}/create")
           .withHttpHeaders("Accept" -> "application/json")
@@ -65,9 +66,9 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
-  def renderRetrieveAllClients(): Action[AnyContent] = Action { implicit request: RequestHeader =>
-    Ok(views.html.listClientsJS())
-  }
+//  def renderRetrieveAllClients(): Action[AnyContent] = Action { implicit request: RequestHeader =>
+//    Ok(views.html.listClientsJS())
+//  }
 
   def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
     clientOrchestrator.executeGetClients.map { x =>
@@ -95,8 +96,8 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.deleteClient(_id).map { x =>
-      Ok(views.html.deleteClient(x))
+    clientConnector.deleteClient(_id).map { _ =>
+      Ok(views.html.deleteClient(_id))
     }.recover {
       case ex: Exception => InternalServerError
     }

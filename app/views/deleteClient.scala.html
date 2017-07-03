@@ -12,20 +12,28 @@
         <div class="breadcrumbs">
             <ol>
                 <li><a href="@routes.ApplicationController.home">Home</a></li>
-                <li aria-current="page">Client List</li>
+                <li aria-current="page">Delete</li>
             </ol>
         </div>
+
+        <a href="@routes.ApplicationController.retrieveAllClientsPage()" class="link-back">Back</a>
 
         <h1 class="heading-xlarge">@Messages("create.delete.title")</h1>
         <div class="grid-row">
             <div class="column-full">
-      @if(result == "OK"){
 
-                <p>Delete Successful</p>
-            } else {
-                <p>Delete Un-Successful</p>
-
-            }
+                <div class="form-group">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="form-label-bold">
+                                Client ID
+                            </label>
+                            <label class="form-label" id = "clientID">
+                                <p>@result has been successfully deleted</p>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
 
             </div>
         </div>
