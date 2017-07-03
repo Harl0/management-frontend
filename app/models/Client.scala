@@ -16,13 +16,13 @@ case class Client(
                    imageURI: Option[String] = None,
                    contactName: Option[String] = None,
                    contactDetails: Option[String] = None
-//                   serviceStartDate: Option[OffsetDateTime] = None
+                   //                   serviceStartDate: Option[OffsetDateTime] = None
                  )
 
 object Client {
   implicit val formats = Json.format[Client]
 
-  def buildEmpty: Seq[Client] = {
+  def buildEmptyClientSeq: Seq[Client] = {
     Seq(Client(
       "EMPTY _id",
       "EMPTY clientName",
@@ -33,6 +33,19 @@ object Client {
       Some("EMPTY contactName"),
       Some("EMPTY contactDetails")
     )
+    )
+  }
+
+  def buildEmptyClient: Client = {
+    Client(
+      "EMPTY _id",
+      "EMPTY clientName",
+      "EMPTY redirectURIs",
+      "EMPTY clientId",
+      "EMPTY clientSecret",
+      Some("EMPTY imageURI"),
+      Some("EMPTY contactName"),
+      Some("EMPTY contactDetails")
     )
   }
 }

@@ -1,7 +1,7 @@
 @(
-       client: Client,
+        client: Client,
         inputFields: List[ClientInputFields],
-        form: Form[ClientForm.Client])(implicit messages: Messages, request: RequestHeader)
+        form: Form[ClientForm.ClientForm])(implicit messages: Messages, request: RequestHeader)
 
 @main("create.client.details.title") {
     <main id="content">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 }
-                @helper.form(routes.ApplicationController.postCreateClient()) {
+                @helper.form(routes.ApplicationController.postUpdateClient()) {
                     @helper.CSRF.formField
                     <div class="form-group">
                         <fieldset>

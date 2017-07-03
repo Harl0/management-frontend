@@ -20,7 +20,17 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
       .url(s"${config.clientUrl}/retrieve")
       .get().map {
       case res if res.status == 200 => res.json.as[Seq[Client]]
-    }.recover { case e => Logger.info("Unable to retrieve data"); Client.buildEmpty }
+    }.recover { case e => Logger.info("Unable to retrieve data"); Client.buildEmptyClientSeq }
+  }
+
+  def retrieveClientDetail(_id: String): Future[Client]
+  = {
+    val request = s"${config.clientUrl}/clientDetail?_id=${_id}"
+    ws
+      .url(request)
+      .get().map {
+      case res if res.status == 200 => res.json.as[Client]
+    }.recover { case e => Logger.info("Unable to retrieve data"); Client.buildEmptyClient }
   }
 
   def deleteClient(_id: String): Future[String]

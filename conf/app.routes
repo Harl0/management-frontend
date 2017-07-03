@@ -1,8 +1,9 @@
 GET  /                      controllers.ApplicationController.home
 GET  /createClient          controllers.ApplicationController.createClient
 POST /createClient          controllers.ApplicationController.postCreateClient
+POST /updateClient          controllers.ApplicationController.postUpdateClient
 #GET  /retrieveJson         controllers.ApplicationController.renderRetrieveAllClients
 GET  /retrieveClientList    controllers.ApplicationController.retrieveClientList
-GET  /retrieveClientDetail  controllers.ApplicationController.retrieveClientDetail(_id: String, clientName: String, redirectURIs: String, clientId: String, clientSecret: String, imageURI: String, contactName: String, contactDetails: String)
+GET  /retrieveClientDetail  controllers.ApplicationController.retrieveClientDetail(_id: String)
 GET  /deleteClient          controllers.ApplicationController.deleteClient(_id: String)
 GET  /BASassets/*file       controllers.Assets.at(path="/public", file)

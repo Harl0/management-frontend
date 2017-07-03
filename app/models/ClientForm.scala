@@ -11,25 +11,27 @@ import play.api.libs.json.Json
   */
 object ClientForm {
 
-  case class Client(clientName: String,
-                    redirectURIs: String,
-                    imageURI: Option[String] = None,
-                    contactName: Option[String] = None,
-                    contactDetails: Option[String] = None,
-                    serviceStartDate: Option[LocalDate] = None)
+  case class ClientForm(_id: Option[String],
+                        clientName: String,
+                        redirectURIs: String,
+                        imageURI: Option[String] = None,
+                        contactName: Option[String] = None,
+                        contactDetails: Option[String] = None,
+                        serviceStartDate: Option[LocalDate] = None)
 
-  object Client {
-    implicit val clientRegisterFormat = Json.format[Client]
+  object ClientForm {
+    implicit val clientRegisterFormat = Json.format[ClientForm]
   }
 
   val clientForm = Form(mapping(
+    "_id" -> optional(text),
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
     "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
     "imageURI" -> optional(text),
     "contactName" -> optional(text),
     "contactDetails" -> optional(text),
     "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
-  )(Client.apply)(Client.unapply))
+  )(ClientForm.apply)(ClientForm.unapply))
 
   val clients = List(
     ClientInputFields("Department Name", "clientName", "Mandatory"),
