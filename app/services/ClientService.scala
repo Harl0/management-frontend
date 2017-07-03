@@ -13,7 +13,7 @@ class ClientService @Inject()(clientConnector: ClientConnector){
 
   def executeGetClients: Future[Clients] = {
     for {
-      clientResult <- clientConnector.getAllClients
+      clientResult <- clientConnector.retrieveClientList
     } yield {
       Clients(
         clientResult

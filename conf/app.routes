@@ -1,9 +1,8 @@
-GET  /                   controllers.ApplicationController.home
-GET  /create             controllers.ApplicationController.createClient
-POST /create             controllers.ApplicationController.postCreateClient
-GET  /retrieve           controllers.ApplicationController.retrieveAllClientsPage
-#GET  /retrieveJson       controllers.ApplicationController.renderRetrieveAllClients
-GET  /getClients         controllers.ApplicationController.retrieveAllClients
-GET  /viewClient         controllers.ApplicationController.viewClient(_id: String, clientName: String, redirectURIs: String, clientId: String, clientSecret: String, imageURI: String, contactName: String, contactDetails: String)
-GET  /deleteClient       controllers.ApplicationController.deleteClient(_id: String)
-GET  /BASassets/*file    controllers.Assets.at(path="/public", file)
+GET  /                      controllers.ApplicationController.home
+GET  /createClient          controllers.ApplicationController.createClient
+POST /createClient          controllers.ApplicationController.postCreateClient
+#GET  /retrieveJson         controllers.ApplicationController.renderRetrieveAllClients
+GET  /retrieveClientList    controllers.ApplicationController.retrieveClientList
+GET  /retrieveClientDetail  controllers.ApplicationController.retrieveClientDetail(_id: String, clientName: String, redirectURIs: String, clientId: String, clientSecret: String, imageURI: String, contactName: String, contactDetails: String)
+GET  /deleteClient          controllers.ApplicationController.deleteClient(_id: String)
+GET  /BASassets/*file       controllers.Assets.at(path="/public", file)

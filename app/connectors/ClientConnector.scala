@@ -14,7 +14,7 @@ import scala.concurrent.Future
   * Created by jason on 29/06/17.
   */
 class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
-  def getAllClients: Future[Seq[Client]]
+  def retrieveClientList: Future[Seq[Client]]
   = {
     ws
       .url(s"${config.clientUrl}/retrieve")

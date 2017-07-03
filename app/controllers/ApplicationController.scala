@@ -34,7 +34,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     * GET   /createClient
     */
   def createClient(): Action[AnyContent] = Action { implicit request: RequestHeader =>
-    Ok(views.html.addClient(clients, clientForm))
+    Ok(views.html.createClient(clients, clientForm))
   }
 
   /**
@@ -44,7 +44,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     clientForm.bindFromRequest.fold(
       formWithErrors => {
         Future {
-          BadRequest(views.html.addClient(clients, formWithErrors))
+          BadRequest(views.html.createClient(clients, formWithErrors))
         }
       },
       data => {
@@ -70,29 +70,29 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
 //    Ok(views.html.listClientsJS())
 //  }
 
-  def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
-    clientOrchestrator.executeGetClients.map { x =>
-      Ok(Json.toJson(x))
+//  def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
+//    clientOrchestrator.executeGetClients.map { x =>
+//      Ok(Json.toJson(x))
+//    }.recover {
+//      case ex: Exception => InternalServerError
+//    }
+//  }
+
+  def retrieveClientList: Action[AnyContent] = Action.async { implicit request =>
+    clientConnector.retrieveClientList.map { x =>
+      Ok(views.html.retrieveClients(x))
     }.recover {
       case ex: Exception => InternalServerError
     }
   }
 
-  def retrieveAllClientsPage: Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.getAllClients.map { x =>
-      Ok(views.html.listClients(x))
-    }.recover {
-      case ex: Exception => InternalServerError
-    }
-  }
-
-  def viewClient(_id: String, clientName: String, redirectURIs: String, clientId: String,
-                 clientSecret: String, imageURI: String, contactName: String, contactDetails: String):
+  def retrieveClientDetail(_id: String, clientName: String, redirectURIs: String, clientId: String,
+                           clientSecret: String, imageURI: String, contactName: String, contactDetails: String):
   Action[AnyContent] = Action { implicit request: RequestHeader =>
     import models.Client
-    val newClient = Client(_id, clientName, redirectURIs, clientId, clientSecret, Some(imageURI), Some(contactName), Some(contactDetails))
+    val clientDetail = Client(_id, clientName, redirectURIs, clientId, clientSecret, Some(imageURI), Some(contactName), Some(contactDetails))
 
-    Ok(views.html.viewClient(newClient, clientsView, clientForm))
+    Ok(views.html.viewClient(clientDetail, clientsView, clientForm))
   }
 
   def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
