@@ -1,2 +1,2 @@
-GET  /create             controllers.ApplicationController.createClient
-POST /create             controllers.ApplicationController.postCreateClient
+GET  /client/create             controllers.ApplicationController.createClient
+POST /client/create             controllers.ApplicationController.postCreateClient
