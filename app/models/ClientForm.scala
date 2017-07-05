@@ -14,9 +14,9 @@ object ClientForm {
   case class ClientRegistrationForm(
                                      clientName: String,
                                      redirectURIs: String,
-                                     imageURI: String = "",
-                                     contactName: String = "",
-                                     contactDetails: String = "",
+                                     imageURI: Option[String] = None,
+                                     contactName: Option[String] = None,
+                                     contactDetails: Option[String] = None,
                                      serviceStartDate: Option[LocalDate] = None
                                    )
 
@@ -27,22 +27,22 @@ object ClientForm {
   val clientRegistrationForm = Form(mapping(
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
     "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
-    "imageURI" -> text,
-    "contactName" -> text,
-    "contactDetails" -> text,
-    "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
+    "imageURI" -> optional(text),
+    "contactName" -> optional(text),
+    "contactDetails" -> optional(text),
+    "serviceStartDate" -> optional(localDate("yyyy-MM-dd"))
   )(ClientRegistrationForm.apply)(ClientRegistrationForm.unapply))
 
   val clientViewForm = Form(mapping(
     "_id" -> text.verifying("_id is required", _.nonEmpty),
     "clientName" -> text.verifying("Client Name is requried", _.nonEmpty),
-    "redirectURIs" -> text.verifying("redirectURIs is required", _.nonEmpty),
-    "clientId" -> text.verifying("clientID is required", _.nonEmpty),
-    "clientSecret" -> text.verifying("clientSecret is required", _.nonEmpty),
-    "imageURI" -> text,
-    "contactName" -> text,
-    "contactDetails" -> text,
-    "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
+    "redirectURIs" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
+    "clientId" -> text,
+    "clientSecret" -> text,
+    "imageURI" -> optional(text),
+    "contactName" -> optional(text),
+    "contactDetails" -> optional(text),
+    "serviceStartDate" -> optional(localDate("yyyy-MM-dd"))
   )(Client.apply)(Client.unapply))
 
   val clients = List(
@@ -51,7 +51,7 @@ object ClientForm {
     ClientInputFields("Image URIs", "imageURI", "Optional"),
     ClientInputFields("Contact Name", "contactName", "Optional"),
     ClientInputFields("Contact Details", "contactDetails", "Optional"),
-    ClientInputFields("Service Start Date", "serviceStartDate", "Optional - Format dd/MM/yyyy")
+    ClientInputFields("Service Start Date", "serviceStartDate", "Optional - Format yyyy-MM-dd")
   )
 
   val clientsView = List(

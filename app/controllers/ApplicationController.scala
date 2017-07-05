@@ -12,7 +12,6 @@ import play.api.libs.ws.WSClient
 import play.api.mvc._
 import services.ClientService
 import utils.Constants._
-import utils.DateConversions
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -57,6 +56,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
           .withHttpHeaders("Accept" -> "application/json")
           .post(Json.toJson(data))
           .map { x =>
+            println(">>>>>>>>>>>>>>> RESULT FROM CLIENT: "+x.json)
             val cred = Json.fromJson[ClientRegister](x.json).asOpt
             logger.info("new client inserted")
             Ok(views.html.addClientConfirmation(cred.get))
@@ -99,13 +99,13 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   }
 
   def postUpdateClient: Action[AnyContent] = Action.async { implicit request =>
-    println("clientViewForm")
     clientViewForm.bindFromRequest.fold(
       formWithErrors => {
-        println("FormErrors "+formWithErrors)
-        val id = clientViewForm.data.get("_id").get
+        val id = request.body.asFormUrlEncoded.collect {
+          case s => s("_id").head
+        }.getOrElse("")
         clientConnector.retrieveClientDetail(id) map { clientData =>
-          BadRequest(views.html.viewClient(clientData, formWithErrors, None))
+         BadRequest(views.html.viewClient(clientData, formWithErrors, None))
         }
       },
       data => {

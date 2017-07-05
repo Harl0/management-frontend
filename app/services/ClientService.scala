@@ -2,7 +2,7 @@ package services
 
 import com.google.inject.Inject
 import connectors.ClientConnector
-import models.{Client, Clients}
+import models.Client
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -12,15 +12,15 @@ import scala.concurrent.Future
   */
 class ClientService @Inject()(clientConnector: ClientConnector) {
 
-  def executeGetClients: Future[Clients] = {
-    for {
-      clientResult <- clientConnector.retrieveClientList
-    } yield {
-      Clients(
-        clientResult
-      )
-    }
-  }
+//  def executeGetClients: Future[Clients] = {
+//    for {
+//      clientResult <- clientConnector.retrieveClientList
+//    } yield {
+//      Clients(
+//        clientResult
+//      )
+//    }
+//  }
 
   def retrieveClientDetails(id: String): Future[Client] = {
     for {

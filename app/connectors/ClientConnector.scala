@@ -19,7 +19,7 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
     ws
       .url(s"${config.clientUrl}/retrieve")
       .get().map {
-      case res if res.status == 200 => Logger.info("Received status : "+ res.status); println(res.json);Logger.info("Received data: "+res.json.as[Seq[Client]]); res.json.as[Seq[Client]]
+      case res if res.status == 200 => Logger.info("Received status : "+ res.status);Logger.info("Received data: "+res.json.as[Seq[Client]]); res.json.as[Seq[Client]]
     }.recover { case e => Logger.info("Unable to retrieve data"); Client.buildEmptyClientSeq }
   }
 

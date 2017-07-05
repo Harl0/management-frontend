@@ -1,6 +1,6 @@
 package models
 
-import java.time.{LocalDate, OffsetDateTime, ZoneOffset}
+import java.time.LocalDate
 
 import play.api.libs.json.Json
 
@@ -13,40 +13,29 @@ case class Client(
                    redirectURIs: String,
                    clientId: String,
                    clientSecret: String,
-                   imageURI: String = "",
-                   contactName: String = "",
-                   contactDetails: String = "",
+                   imageURI: Option[String] = None,
+                   contactName: Option[String] = None,
+                   contactDetails: Option[String] = None,
                    serviceStartDate: Option[LocalDate] = None
                  )
 
 object Client {
   implicit val formats = Json.format[Client]
 
-  implicit def toOffsetDateTime(epochMillis: Option[String]): Option[OffsetDateTime] = {
-    epochMillis match {
-      case Some(date) => Some(OffsetDateTime.of(LocalDate.parse(date).atStartOfDay(), ZoneOffset.UTC))
-      case None => None
-    }
-  }
-
-  //  def buildClient(client: ): Seq[Client] = {
-  //    Seq(Client())
-  //  }
   def buildEmptyClientSeq: Seq[Client] = {
     Seq(buildEmptyClient)
   }
 
   def buildEmptyClient: Client = {
     Client(
-      "EMPTY _id",
-      "EMPTY clientName",
-      "EMPTY redirectURIs",
-      "EMPTY clientId",
-      "EMPTY clientSecret",
-      "EMPTY imageURI",
-      "EMPTY contactName",
-      "EMPTY contactDetails",
-      Some(LocalDate.now())
-    )
+      "No Data",
+      "No Data",
+      "No Data",
+      "No Data",
+      "No Data",
+      Some("No Data"),
+      Some("No Data"),
+      Some("No Data"),
+      Some(LocalDate.now()))
   }
 }
