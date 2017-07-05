@@ -33,4 +33,5 @@ object Constants {
   val formTitle = "signin-form-title-text"
   val signInPageFormTitleText = "In this prototype please select a user type below:"
 
+  val updateConfirmationMessage = "Client updated successfully"
 }

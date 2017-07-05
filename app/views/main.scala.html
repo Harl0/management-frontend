@@ -13,6 +13,20 @@
     </p>
 }
 
+@insideHeader = {
+        <div class="header-proposition">
+            <div class="content">
+                <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
+                <nav id="proposition-menu">
+                    <a href="@routes.ApplicationController.home()" id="proposition-name">Client Support</a>
+                    <ul id="proposition-links">
+                        <li><a href=@routes.ApplicationController.createClient()>Create Client</a></li>
+                        <li><a href=@routes.ApplicationController.retrieveClientList()>List Clients</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+}
 @govuk_template(
     title = Some(Messages(title)),
     bodyClasses = None,
@@ -21,7 +35,7 @@
     head = extraHeadTags,
     bodyStart = new Html(""),
     bodyEnd = new Html(""),
-    insideHeader = new Html(""),
+    insideHeader = insideHeader,
     afterHeader = new Html(""),
     footerTop = new Html(""),
     footerLinks = new Html(""),

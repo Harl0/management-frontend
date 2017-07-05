@@ -1,0 +1,50 @@
+@(client: Seq[Client])(implicit messages: Messages, request: RequestHeader)
+
+@main("create.listAll.title") {
+    <main id="content">
+        <div class="phase-banner">
+            <p>
+                <strong class="phase-tag">ALPHA</strong>
+                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+            </p>
+        </div>
+        <div class="column-full">
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script type="text/javascript" src='@routes.Assets.at("javascripts/deleteClient.js")'></script>
+        </div>
+
+        <div class="breadcrumbs">
+            <ol>
+                <li><a href="@routes.ApplicationController.home">Home</a></li>
+                <li aria-current="page">Client List</li>
+            </ol>
+        </div>
+
+        <h1 class="heading-xlarge">@Messages("create.listAll.title")</h1>
+        <div class="grid-row">
+            <div class="column-full">
+                <table>
+                    <thead>
+                        <th>Name</th>
+                        <th>Client Id</th>
+                        <th>Client Secret</th>
+                        <th>Start Date</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                    @for(c <- client) {
+                        <tr>
+                            <td>@c.clientName</td>
+                            <td>@c.clientId</td>
+                            <td>@c.clientSecret</td>
+                            <td>@c.serviceStartDate</td>
+                            <td><a href="@routes.ApplicationController.retrieveClientDetail(c._id)">View</a> &nbsp;
+                            <a href="javascript:void(0);" onclick="deleteFunction('@c._id', '@c.clientName', '@c.clientId');">Delete</a></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+}
