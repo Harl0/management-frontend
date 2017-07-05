@@ -114,5 +114,11 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
-
+  def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
+    clientConnector.deleteClient(_id).map { _ =>
+      Ok
+    }.recover {
+      case ex: Exception => InternalServerError
+    }
+  }
 }
