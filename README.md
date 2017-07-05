@@ -1,4 +1,4 @@
-# client-frontend
+# management-frontend
 
 ## Running the service (port 8060)
 

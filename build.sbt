@@ -1,6 +1,6 @@
 import scoverage.ScoverageKeys
 
-name := "client-frontend"
+name := "management-frontend"
 
 scalaVersion := "2.12.2"
 
@@ -31,7 +31,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
   .configs(IntegrationTest)
   .settings(scoverageSettings ++ Defaults.itSettings: _*)
 
-assemblyJarName in assembly := "client-frontend.jar"
+assemblyJarName in assembly := "management-frontend.jar"
 
 mainClass in assembly := Some("play.core.server.ProdServerStart")
 fullClasspath in assembly += Attributed.blank(PlayKeys.playPackageAssets.value)
