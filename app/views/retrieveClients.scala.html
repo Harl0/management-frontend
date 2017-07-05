@@ -8,6 +8,10 @@
                 <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
             </p>
         </div>
+        <div class="column-full">
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script type="text/javascript" src='@routes.Assets.at("javascript/deleteConfirmation.js")'></script>
+        </div>
 
         <div class="breadcrumbs">
             <ol>
@@ -21,19 +25,21 @@
             <div class="column-full">
                 <table>
                     <thead>
-                        <th>Client ID</th>
                         <th>Name</th>
-                        <th>Details</th>
-                        <th>Delete</th>
+                        <th>Client Id</th>
+                        <th>Client Secret</th>
+                        <th>Date</th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
                     @for(c <- client) {
                         <tr>
-                            <td>@c.clientId</td>
                             <td>@c.clientName</td>
-                            @*<td><a href="@routes.ApplicationController.retrieveClientDetail(c._id, c.clientName, c.redirectURIs, c.clientId, c.clientSecret, c.imageURI.getOrElse(""), c.contactName.getOrElse(""), c.contactDetails.getOrElse(""))">View</a></td>*@
-                            <td><a href="@routes.ApplicationController.retrieveClientDetail(c._id)">View</a></td>
-                            <td><a href="@routes.ApplicationController.deleteClient(c._id)">Delete</a></td>
+                            <td>@c.clientId</td>
+                            <td>@c.clientSecret</td>
+                            <td>@c.serviceStartDate</td>
+                            <td><a href="@routes.ApplicationController.retrieveClientDetail(c._id)">View</a> &nbsp;
+                            <a href="javascript:void(0);" onclick="deleteFunction('@c._id');">Delete</a></td>
                         </tr>
                     }
                     </tbody>

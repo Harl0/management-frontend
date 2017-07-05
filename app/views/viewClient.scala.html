@@ -1,7 +1,8 @@
 @(
         client: Client,
-        inputFields: List[ClientInputFields],
-        form: Form[ClientForm.ClientUpdateForm])(implicit messages: Messages, request: RequestHeader)
+        form: Form[Client],
+        confirmationMessage: Option[String]
+)(implicit messages: Messages, request: RequestHeader)
 
 @main("create.client.details.title") {
     <main id="content">
@@ -23,6 +24,7 @@
 
 
         <h1 class="heading-xlarge">@Messages("create.client.details.title")</h1>
+        <p>@confirmationMessage</p>
         <div class="grid-row">
             <div class="column-full">
                 @if(form.hasErrors) {
@@ -56,33 +58,12 @@
                         <fieldset>
                             <legend id="BAS-login-form">
                             </legend>
-                            <div class="form-group">
-                                <label class="form-label-bold" id=_id for=_id>
-                                    MongoDB _id
-                                    <span class="form-hint">
-                                        MongoDB _id Hint
-                                    </span>
-                                </label>
-                                <input class="form-control" id=_id name=_id value="@client._id" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label-bold" id=clientName for=ClientName>
-                                    Client Name
-                                    <span class="form-hint">
-                                        Client Name Hint
-                                    </span>
-                                </label>
-                                <input class="form-control" id=clientName name="clientName" value="@client.clientName" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label-bold" id=clientID for=ClientID>
-                                    Client ID
-                                    <span class="form-hint">
-                                        Client ID Hint
-                                    </span>
-                                </label>
-                                <input class="form-control" id=clientID name=clientID value="@client.clientId" type="text">
-                            </div>
+                            <input type="hidden" id=_id name="_id" value="@client._id" type="text">
+                            <input type="hidden" id=clientName name="clientName" value="@client.clientName" type="text">
+                            <input type="hidden" id=clientID name="clientId" value="@client.clientId" type="text">
+                            <input type="hidden" id=clientSecret name="clientSecret" value="@client.clientSecret" type="text">
+                            @*<input type="hidden" id=serviceStartDate name="serviceStartDate" value="@client.clientSecret" type="text">*@
+
 
                             <div class="form-group">
                                 <label class="form-label-bold" id=redirectURIs for=RedirectURIs>
@@ -91,27 +72,7 @@
                                         RedirectURIs Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=redirectURIs name=redirectURIs value="@client.redirectURIs" type="text">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label-bold" id=clientID for=ClientID>
-                                    ClientID
-                                    <span class="form-hint">
-                                        ClientID Hint
-                                    </span>
-                                </label>
-                                <input class="form-control" id=clientID name=clientId value="@client.clientId" type="text">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label-bold" id=clientSecret for=ClientSecret>
-                                    ClientSecret
-                                    <span class="form-hint">
-                                        ClientSecret Hint
-                                    </span>
-                                </label>
-                                <input class="form-control" id=clientSecret name=clientSecret value="@client.clientSecret" type="text">
+                                <input class="form-control" id=redirectURIs name="redirectURIs" value="@client.redirectURIs" type="text">
                             </div>
 
                             <div class="form-group">
@@ -121,7 +82,7 @@
                                         ImageURI Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=imageURI name=imageURI value="@client.imageURI" type="text">
+                                <input class="form-control" id=imageURI name="imageURI" value="@client.imageURI" type="text">
                             </div>
 
                             <div class="form-group">
@@ -131,7 +92,7 @@
                                         ContactName Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=contactName name=contactName value="@client.contactName" type="text">
+                                <input class="form-control" id=contactName name="contactName" value="@client.contactName" type="text">
                             </div>
 
                             <div class="form-group">
@@ -141,12 +102,11 @@
                                         ContactDetails Hint
                                     </span>
                                 </label>
-                                <input class="form-control" id=contactDetails name=contactDetails value="@client.contactDetails" type="text">
+                                <input class="form-control" id=contactDetails name="contactDetails" value="@client.contactDetails" type="text">
                             </div>
-
                         </fieldset>
                     </div>
-                    <input class="button" type="submit" value="Submit">
+                    <input class="button" type="submit" value="Update">
                     }
             </div>
         </div>

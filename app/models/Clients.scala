@@ -17,9 +17,9 @@ object Clients {
       "EMPTY redirectURIs",
       "EMPTY clientId",
       "EMPTY clientSecret",
-      Some("EMPTY imageURI"),
-      Some("EMPTY contactName"),
-      Some("EMPTY contactDetails")
+      "EMPTY imageURI",
+      "EMPTY contactName",
+      "EMPTY contactDetails"
     ))
     )
   }

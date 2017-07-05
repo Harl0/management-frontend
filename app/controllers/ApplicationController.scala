@@ -7,10 +7,12 @@ import connectors.ClientConnector
 import models.ClientForm._
 import models.{Client, ClientRegister}
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Json
+import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 import services.ClientService
+import utils.Constants._
+import utils.DateConversions
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -90,19 +92,20 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   def retrieveClientDetail(_id: String): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
     clientConnector.retrieveClientDetail(_id).map {
       clientDetail =>
-        Ok(views.html.viewClient(clientDetail, clientsView, clientUpdateForm))
+        Ok(views.html.viewClient(clientDetail, clientViewForm, None))
     }.recover {
       case ex: Exception => InternalServerError
     }
   }
 
   def postUpdateClient: Action[AnyContent] = Action.async { implicit request =>
-    clientUpdateForm.bindFromRequest.fold(
+    println("clientViewForm")
+    clientViewForm.bindFromRequest.fold(
       formWithErrors => {
-        val id = clientUpdateForm.data.get("_id").get
-        println(">>>>>>>>>>>>>.. Sending form data "+ clientUpdateForm)
-        clientConnector.retrieveClientDetail(id) map { l =>
-          BadRequest(views.html.viewClient(l, clientsView, formWithErrors))
+        println("FormErrors "+formWithErrors)
+        val id = clientViewForm.data.get("_id").get
+        clientConnector.retrieveClientDetail(id) map { clientData =>
+          BadRequest(views.html.viewClient(clientData, formWithErrors, None))
         }
       },
       data => {
@@ -113,12 +116,13 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
           .post(Json.toJson(data))
           .map { x =>
             val data = Json.fromJson[Client](x.json).asOpt
+            logger.info(data.toString)
             logger.info("Client updated!")
-            Ok(views.html.viewClient(data.get, clientsView, clientUpdateForm))
+            Ok(views.html.viewClient(data.get, clientViewForm, Some(updateConfirmationMessage)))
           }.recover {
           case e =>
             logger.error("There was an error updating client : " + e.getMessage)
-            Ok(views.html.error())
+            Ok(views.html.updateError())
         }
       }
     )

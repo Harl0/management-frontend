@@ -14,9 +14,9 @@ object ClientForm {
   case class ClientRegistrationForm(
                                      clientName: String,
                                      redirectURIs: String,
-                                     imageURI: Option[String] = None,
-                                     contactName: Option[String] = None,
-                                     contactDetails: Option[String] = None,
+                                     imageURI: String = "",
+                                     contactName: String = "",
+                                     contactDetails: String = "",
                                      serviceStartDate: Option[LocalDate] = None
                                    )
 
@@ -27,38 +27,23 @@ object ClientForm {
   val clientRegistrationForm = Form(mapping(
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
     "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),
-    "imageURI" -> optional(text),
-    "contactName" -> optional(text),
-    "contactDetails" -> optional(text),
+    "imageURI" -> text,
+    "contactName" -> text,
+    "contactDetails" -> text,
     "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
   )(ClientRegistrationForm.apply)(ClientRegistrationForm.unapply))
 
-  case class ClientUpdateForm(
-                               _id: String,
-                               clientName: String,
-                               redirectURIs: String,
-                               clientId: String,
-                               clientSecret: String,
-                               imageURI: Option[String] = None,
-                               contactName: Option[String] = None,
-                               contactDetails: Option[String] = None
-                             )
-
-  object ClientUpdateForm {
-    implicit val clientRegisterFormat = Json.format[ClientUpdateForm]
-  }
-
-  val clientUpdateForm = Form(mapping(
+  val clientViewForm = Form(mapping(
     "_id" -> text.verifying("_id is required", _.nonEmpty),
     "clientName" -> text.verifying("Client Name is requried", _.nonEmpty),
     "redirectURIs" -> text.verifying("redirectURIs is required", _.nonEmpty),
     "clientId" -> text.verifying("clientID is required", _.nonEmpty),
     "clientSecret" -> text.verifying("clientSecret is required", _.nonEmpty),
-    "imageURI" -> optional(text),
-    "contactName" -> optional(text),
-    "contactDetails" -> optional(text)
-//    "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
-  )(ClientUpdateForm.apply)(ClientUpdateForm.unapply))
+    "imageURI" -> text,
+    "contactName" -> text,
+    "contactDetails" -> text,
+    "serviceStartDate" -> optional(localDate("dd/MM/yyyy"))
+  )(Client.apply)(Client.unapply))
 
   val clients = List(
     ClientInputFields("Department Name", "clientName", "Mandatory"),
