@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
-import connectors.ClientConnector
+import connectors.{ClientConnector, TokenConnector}
 import models.ClientForm._
 import play.api.i18n.I18nSupport
 import play.api.libs.json._
@@ -19,7 +19,7 @@ import scala.concurrent.Future
   */
 
 class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
-                                      clientConnector: ClientConnector)
+                                      clientConnector: ClientConnector, tokenConnector: TokenConnector)
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
@@ -111,5 +111,13 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       }.recover {
         case ex: Exception => InternalServerError
       }
+  }
+
+  def createTokenKeys(): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
+    tokenConnector.createKeys.map { _ =>
+      Ok(views.html.tokenCreateKeys())
+    }.recover {
+      case ex: Exception => InternalServerError
+    }
   }
 }
