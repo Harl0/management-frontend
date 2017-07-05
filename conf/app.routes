@@ -1,8 +1,8 @@
-GET  /                      controllers.ApplicationController.home
-GET  /createClient          controllers.ApplicationController.createClient
-POST /createClient          controllers.ApplicationController.postCreateClient
-POST /updateClient          controllers.ApplicationController.postUpdateClient
-GET  /retrieveClientList    controllers.ApplicationController.retrieveClientList
-GET  /retrieveClientDetail  controllers.ApplicationController.retrieveClientDetail(_id: String)
-GET  /deleteClient          controllers.ApplicationController.deleteClient(_id: String)
-GET  /BASassets/*file       controllers.Assets.at(path="/public", file)
+GET  /client                        controllers.ApplicationController.home
+GET  /client/createClient           controllers.ApplicationController.createClient
+POST /client/createClient           controllers.ApplicationController.postCreateClient
+POST /client/updateClient           controllers.ApplicationController.postUpdateClient
+GET  /client/retrieveClientList     controllers.ApplicationController.retrieveClientList
+GET  /client/retrieveClientDetail   controllers.ApplicationController.retrieveClientDetail(_id: String)
+GET  /client/deleteClient           controllers.ApplicationController.deleteClient(_id: String)
+GET  /BASassets/*file               controllers.Assets.at(path="/public", file)
