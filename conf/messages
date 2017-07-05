@@ -8,3 +8,4 @@ create.listAll.title=Clients
 create.title.home=Client Support
 create.client.details.title=Client Details
 create.delete.title=Client Delete Confirmation
+create.add.confirmation.title=Client Create Confirmation

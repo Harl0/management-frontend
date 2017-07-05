@@ -4,5 +4,5 @@ POST /client/create                 controllers.ApplicationController.postCreate
 POST /client/update                 controllers.ApplicationController.postUpdateClient
 GET  /client/list                   controllers.ApplicationController.retrieveClientList
 GET  /client/detail                 controllers.ApplicationController.retrieveClientDetail(_id: String)
-GET  /client/delete                 controllers.ApplicationController.deleteClient(_id: String)
+GET  /client/delete                 controllers.ApplicationController.deleteClient(_id: String, clientName: String, clientId: String)
 GET  /BASassets/*file               controllers.Assets.at(path="/public", file)

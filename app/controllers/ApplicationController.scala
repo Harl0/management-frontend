@@ -5,7 +5,6 @@ import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import connectors.ClientConnector
 import models.ClientForm._
-import models.{Client, ClientRegister}
 import play.api.i18n.I18nSupport
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
@@ -20,7 +19,7 @@ import scala.concurrent.Future
   */
 
 class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
-                                      clientConnector: ClientConnector  )
+                                      clientConnector: ClientConnector)
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
@@ -41,7 +40,6 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     * POST  /postCreateClient
     */
   def postCreateClient: Action[AnyContent] = Action.async { implicit request =>
-
     clientRegistrationForm.bindFromRequest.fold(
       formWithErrors => {
         Future {
@@ -50,15 +48,9 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       },
       data => {
         logger.info("Sending: " + Json.toJson(data))
-        ws
-          .url(s"${config.clientUrl}/create")
-          .withHttpHeaders("Accept" -> "application/json")
-          .post(Json.toJson(data))
-          .map { x =>
-            val cred = Json.fromJson[ClientRegister](x.json).asOpt
-            logger.info("new client inserted")
-            Ok(views.html.addClientConfirmation(cred.get))
-          }.recover {
+        clientConnector.createClient(data).map { x =>
+          Ok(views.html.addClientConfirmation(x))
+        }.recover {
           case e =>
             logger.error("There was an error in adding client : " + e.getMessage)
             Ok(views.html.error())
@@ -67,58 +59,57 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
-  def retrieveClientList: Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.retrieveClientList.map { x =>
-      Ok(views.html.retrieveClients(x))
-    }.recover {
-      case ex: Exception => InternalServerError
-    }
-  }
-
-  def retrieveClientDetail(_id: String): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
-    clientConnector.retrieveClientDetail(_id).map {
-      clientDetail =>
-        Ok(views.html.viewClient(clientDetail, clientViewForm, None))
-    }.recover {
-      case ex: Exception => InternalServerError
-    }
-  }
-
-  def postUpdateClient: Action[AnyContent] = Action.async { implicit request =>
-    clientViewForm.bindFromRequest.fold(
-      formWithErrors => {
-        val id = request.body.asFormUrlEncoded.collect {
-          case s => s("_id").head
-        }.getOrElse("")
-        clientConnector.retrieveClientDetail(id) map { clientData =>
-         BadRequest(views.html.viewClient(clientData, formWithErrors, None))
-        }
-      },
-      data => {
-        logger.info("Sending: " + Json.toJson(data))
-        ws
-          .url(s"${config.clientUrl}/update")
-          .withHttpHeaders("Accept" -> "application/json")
-          .post(Json.toJson(data))
-          .map { x =>
-            val data = Json.fromJson[Client](x.json).asOpt
-            logger.info(data.toString)
-            logger.info("Client updated!")
-            Ok(views.html.viewClient(data.get, clientViewForm, Some(updateConfirmationMessage)))
-          }.recover {
-          case e =>
-            logger.error("There was an error updating client : " + e.getMessage)
-            Ok(views.html.updateError())
-        }
+  def retrieveClientList: Action[AnyContent] = Action.async {
+    implicit request =>
+      clientConnector.retrieveClientList.map {
+        x =>
+          Ok(views.html.retrieveClients(x))
+      }.recover {
+        case ex: Exception => InternalServerError
       }
-    )
   }
 
-  def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.deleteClient(_id).map { _ =>
-      Ok
-    }.recover {
-      case ex: Exception => InternalServerError
-    }
+  def retrieveClientDetail(_id: String): Action[AnyContent] = Action.async {
+    implicit request: RequestHeader =>
+      clientConnector.retrieveClientDetail(_id).map {
+        clientDetail =>
+          Ok(views.html.viewClient(clientDetail, clientViewForm, None))
+      }.recover {
+        case ex: Exception => InternalServerError
+      }
+  }
+
+  def postUpdateClient: Action[AnyContent] = Action.async {
+    implicit request =>
+      clientViewForm.bindFromRequest.fold(
+        formWithErrors => {
+          val id = request.body.asFormUrlEncoded.collect {
+            case s => s("_id").head
+          }.getOrElse("")
+          clientConnector.retrieveClientDetail(id) map {
+            clientData =>
+              BadRequest(views.html.viewClient(clientData, formWithErrors, None))
+          }
+        },
+        data => {
+          logger.info("Sending: " + Json.toJson(data))
+          clientConnector.updateClient(data).map { _ =>
+            Ok(views.html.viewClient(data, clientViewForm, Some(updateConfirmationMessage)))
+          }.recover {
+            case e =>
+              logger.error("There was an error in adding client : " + e.getMessage)
+              Ok(views.html.error())
+          }
+        }
+      )
+  }
+
+  def deleteClient(_id: String, clientName: String, clientId: String): Action[AnyContent] = Action.async {
+    implicit request =>
+      clientConnector.deleteClient(_id).map { _ =>
+        Ok
+      }.recover {
+        case ex: Exception => InternalServerError
+      }
   }
 }
