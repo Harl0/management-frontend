@@ -10,7 +10,6 @@ import play.api.i18n.I18nSupport
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-import services.ClientService
 import utils.Constants._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,7 +20,7 @@ import scala.concurrent.Future
   */
 
 class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
-                                      clientConnector: ClientConnector, clientOrchestrator: ClientService)
+                                      clientConnector: ClientConnector  )
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
@@ -56,7 +55,6 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
           .withHttpHeaders("Accept" -> "application/json")
           .post(Json.toJson(data))
           .map { x =>
-            println(">>>>>>>>>>>>>>> RESULT FROM CLIENT: "+x.json)
             val cred = Json.fromJson[ClientRegister](x.json).asOpt
             logger.info("new client inserted")
             Ok(views.html.addClientConfirmation(cred.get))
@@ -68,18 +66,6 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       }
     )
   }
-
-  //  def renderRetrieveAllClients(): Action[AnyContent] = Action { implicit request: RequestHeader =>
-  //    Ok(views.html.listClientsJS())
-  //  }
-
-  //  def retrieveAllClients: Action[AnyContent] = Action.async { implicit request =>
-  //    clientOrchestrator.executeGetClients.map { x =>
-  //      Ok(Json.toJson(x))
-  //    }.recover {
-  //      case ex: Exception => InternalServerError
-  //    }
-  //  }
 
   def retrieveClientList: Action[AnyContent] = Action.async { implicit request =>
     clientConnector.retrieveClientList.map { x =>
@@ -128,11 +114,5 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
-  def deleteClient(_id: String): Action[AnyContent] = Action.async { implicit request =>
-    clientConnector.deleteClient(_id).map { _ =>
-      Ok(views.html.deleteClient(_id))
-    }.recover {
-      case ex: Exception => InternalServerError
-    }
-  }
+
 }
