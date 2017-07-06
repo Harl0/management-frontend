@@ -1,7 +1,6 @@
 login.title=Create Client
 login.form.title=In this prototype please select a user type below:
 error.title=Error
-error.signIn=Please make a selection
 error.client.creation.department.required=Client Department Required
 error.client.creation.redirect_uri.required=Redirect URI Required
 create.listAll.title=Clients
@@ -9,3 +8,6 @@ title.home=Management
 create.client.details.title=Client Details
 create.delete.title=Client Delete Confirmation
 create.add.confirmation.title=Client Create Confirmation
+update.client.confirmation=Client Updated Successfully
+client.delete=Delete
+button.submit=Submit

@@ -24,6 +24,20 @@ object ClientForm {
     implicit val clientRegisterFormat = Json.format[ClientRegistrationForm]
   }
 
+
+  case class ClientDeleteForm(
+                                     clientName: String,
+                                     redirectURIs: String,
+                                     imageURI: Option[String] = None,
+                                     contactName: Option[String] = None,
+                                     contactDetails: Option[String] = None,
+                                     serviceStartDate: Option[LocalDate] = None
+                                   )
+
+  object ClientDeleteForm {
+    implicit val clientDeleteFormat = Json.format[ClientDeleteForm]
+  }
+
   val clientRegistrationForm = Form(mapping(
     "clientName" -> text.verifying("error.client.creation.department.required", _.nonEmpty),
     "redirect_uri" -> text.verifying("error.client.creation.redirect_uri.required", _.nonEmpty),

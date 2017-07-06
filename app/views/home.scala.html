@@ -9,20 +9,13 @@
             </p>
         </div>
 
-        <div class="breadcrumbs">
-            <ol>
-                <li><a href="@routes.ApplicationController.home">Home</a></li>
-                <li aria-current="page">Management</li>
-            </ol>
-        </div>
-
         <h1 class="heading-xlarge">@Messages("title.home")</h1>
         <div class="grid-row">
             <div class="column-full">
                 <ol>
-                    <li><a href="@routes.ApplicationController.createClient()">Create Client</a></li>
-                    <li><a href="@routes.ApplicationController.retrieveClientList()">Show Clients</a></li>
-                    <li><a href=@routes.ApplicationController.createTokenKeys()>Token Create Keys</a></li>
+                    <li id="createClient"><a href="@routes.ApplicationController.createClient()">Create Client</a></li>
+                    <li id="clientList"><a href="@routes.ApplicationController.retrieveClientList()">Client List</a></li>
+                    <li id="tokenCreateKeys"><a href=@routes.ApplicationController.createTokenKeys()>Token Create Keys</a></li>
                 </ol>
             </div>
         </div>

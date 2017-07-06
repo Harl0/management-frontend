@@ -1,4 +1,4 @@
-@(client: ClientRegistrationResponse)(implicit messages: Messages, request: RequestHeader)
+@(clientId: String, clientSecret: String)(implicit messages: Messages, request: RequestHeader)
 
 @main("create.add.confirmation.title") {
 
@@ -8,13 +8,6 @@
                 <strong class="phase-tag">ALPHA</strong>
                 <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
             </p>
-        </div>
-
-        <div class="breadcrumbs">
-            <ol>
-                <li><a href="@routes.ApplicationController.home">Home</a></li>
-                <li aria-current="page">Create Confirmation</li>
-            </ol>
         </div>
 
         <a href="@routes.ApplicationController.retrieveClientList()" class="link-back">Back</a>
@@ -41,7 +34,7 @@
                                 Client ID
                             </label>
                             <label class="form-label" id = "clientId">
-                            @client.clientId
+                            @clientId
                             </label>
                         </div>
                         <div class="form-group">
@@ -49,7 +42,7 @@
                                 Client Secret
                             </label>
                             <label class="form-label" id = "clientSecret">
-                            @client.clientSecret
+                            @clientSecret
                             </label>
                         </div>
                     </fieldset>

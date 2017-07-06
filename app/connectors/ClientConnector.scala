@@ -64,7 +64,8 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
         Logger.info("Received status : " + res.status)
         Logger.info("Received data: " + res.json.as[Seq[Client]])
         res.json.as[Seq[Client]]
-    }.recover { case e => Logger.info("Unable to retrieve data")
+    }.recover { case e =>
+      Logger.info("Unable to retrieve data")
       Logger.info("Connector received: " + e.getCause)
       Client.buildEmptyClientSeq
     }

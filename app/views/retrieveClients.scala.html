@@ -12,38 +12,37 @@
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script type="text/javascript" src='@routes.Assets.at("javascripts/deleteClient.js")'></script>
         </div>
-
-        <div class="breadcrumbs">
-            <ol>
-                <li><a href="@routes.ApplicationController.home">Home</a></li>
-                <li aria-current="page">Client List</li>
-            </ol>
-        </div>
-
         <h1 class="heading-xlarge">@Messages("create.listAll.title")</h1>
         <div class="grid-row">
             <div class="column-full">
-                <table>
+                <table id ="ResultSet">
                     <thead>
-                        <th>Name</th>
-                        <th>Client Id</th>
-                        <th>Client Secret</th>
-                        <th>Start Date</th>
-                        <th>Action</th>
+                        <tr>
+                            <th>Name</th>
+                            <th>Client Id</th>
+                            <th>Client Secret</th>
+                            <th>Start Date</th>
+                            <th>
+                                <button id="delete-submit" class="button" type="button">@Messages("client.delete")</button>
+                                <p> <label><input type="checkbox" id="delete-all"/></label></p>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
                     @for(c <- client) {
                         <tr>
-                            <td>@c.clientName</td>
-                            <td>@c.clientId</td>
-                            <td>@c.clientSecret</td>
-                            <td>@c.serviceStartDate</td>
-                            <td><a href="@routes.ApplicationController.retrieveClientDetail(c._id)">View</a> &nbsp;
-                            <a href="javascript:void(0);" onclick="deleteFunction('@c._id', '@c.clientName', '@c.clientId');">Delete</a></td>
+                            <td style="display: none;">@c._id</td>
+                            <td id="clientName"><a href="@routes.ApplicationController.retrieveClientDetail(c._id, None)">@c.clientName</a></td>
+                            <td id="clientId">@c.clientId</td>
+                            <td id="clientSecret">@c.clientSecret</td>
+                            <td id="serviceStartDate">@c.serviceStartDate</td>
+                            <td><input id="delete" type="checkbox" name="delete" value="delete"></td>
                         </tr>
                     }
                     </tbody>
+
                 </table>
+
             </div>
         </div>
     </main>
