@@ -5,6 +5,7 @@ import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import connectors.{ClientConnector, TokenConnector}
 import models.ClientForm._
+import models.ClientRegistrationResponse
 import play.api.i18n.I18nSupport
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
@@ -23,21 +24,21 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
-    * GET   /home
+    * GET   /
     */
   def home(): Action[AnyContent] = Action { implicit request: RequestHeader =>
     Ok(views.html.home())
   }
 
   /**
-    * GET   /createClient
+    * GET   /client/create
     */
   def createClient(): Action[AnyContent] = Action { implicit request: RequestHeader =>
     Ok(views.html.createClient(clients, clientRegistrationForm))
   }
 
   /**
-    * POST  /postCreateClient
+    * POST  /client/create
     */
   def postCreateClient: Action[AnyContent] = Action.async { implicit request =>
     clientRegistrationForm.bindFromRequest.fold(
@@ -49,7 +50,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       data => {
         logger.info("Sending: " + Json.toJson(data))
         clientConnector.createClient(data).map { x =>
-          Ok(views.html.addClientConfirmation(x))
+          Redirect(routes.ApplicationController.createClientConfirmation(x.clientId, x.clientSecret), FOUND)
         }.recover {
           case e =>
             logger.error("There was an error in adding client : " + e.getMessage)
@@ -59,6 +60,16 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
+  /**
+    * GET   /client/createConfirmation
+    */
+  def createClientConfirmation(clientId: String, clientSecret: String): Action[AnyContent] = Action { implicit request: RequestHeader =>
+    Ok(views.html.addClientConfirmation(clientId, clientSecret))
+  }
+
+  /**
+    * GET   /client/list
+    */
   def retrieveClientList: Action[AnyContent] = Action.async {
     implicit request =>
       clientConnector.retrieveClientList.map {
@@ -69,16 +80,22 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       }
   }
 
-  def retrieveClientDetail(_id: String): Action[AnyContent] = Action.async {
+  /**
+    * GET   /client/detail
+    */
+  def retrieveClientDetail(_id: String, message: Option[String]): Action[AnyContent] = Action.async {
     implicit request: RequestHeader =>
       clientConnector.retrieveClientDetail(_id).map {
         clientDetail =>
-          Ok(views.html.viewClient(clientDetail, clientViewForm, None))
+          Ok(views.html.clientDetail(clientDetail, clientViewForm, message))
       }.recover {
         case ex: Exception => InternalServerError
       }
   }
 
+  /**
+    * POST   /client/update
+    */
   def postUpdateClient: Action[AnyContent] = Action.async {
     implicit request =>
       clientViewForm.bindFromRequest.fold(
@@ -88,13 +105,13 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
           }.getOrElse("")
           clientConnector.retrieveClientDetail(id) map {
             clientData =>
-              BadRequest(views.html.viewClient(clientData, formWithErrors, None))
+              BadRequest(views.html.clientDetail(clientData, formWithErrors, None))
           }
         },
         data => {
           logger.info("Sending: " + Json.toJson(data))
           clientConnector.updateClient(data).map { _ =>
-            Ok(views.html.viewClient(data, clientViewForm, Some(updateConfirmationMessage)))
+            Redirect(routes.ApplicationController.retrieveClientDetail(data._id, Some("update.client.confirmation")), FOUND)
           }.recover {
             case e =>
               logger.error("There was an error in adding client : " + e.getMessage)
@@ -104,7 +121,10 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       )
   }
 
-  def deleteClient(_id: String, clientName: String, clientId: String): Action[AnyContent] = Action.async {
+  /**
+    * GET   /client/delete
+    */
+  def deleteClient(_id: String): Action[AnyContent] = Action.async {
     implicit request =>
       clientConnector.deleteClient(_id).map { _ =>
         Ok
@@ -113,6 +133,9 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       }
   }
 
+  /**
+    * GET   /token/createKeys
+    */
   def createTokenKeys(): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
     tokenConnector.createKeys.map { _ =>
       Ok(views.html.tokenCreateKeys())
