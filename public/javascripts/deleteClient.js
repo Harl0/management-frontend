@@ -22,7 +22,6 @@ $(document).ready(function () {
                     success: function (data, status) {
                         console.log(data, status);
                         window.location.replace('/management/client/list');
-                        $("#search-form").submit();
                     },
                     error: function (req, status, error) {
                         console.log(status + error);
