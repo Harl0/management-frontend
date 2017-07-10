@@ -4,122 +4,107 @@
         confirmationMessage: Option[String]
 )(implicit messages: Messages, request: RequestHeader)
 
-@main("create.client.details.title") {
-    <main id="content">
-        <div class="phase-banner">
-            <p>
-                <strong class="phase-tag">ALPHA</strong>
-                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
-            </p>
-        </div>
+    @main("create.client.details.title") {
+        <div class="container">
 
-        <a href="@routes.ApplicationController.retrieveClientList()" class="link-back">Back</a>
+            <a href="@routes.ApplicationController.retrieveClientList()" class="link-back">Back</a>
 
-        <h1 class="heading-xlarge">@Messages("create.client.details.title")</h1>
-        <div class="grid-row">
-
-            @if(confirmationMessage.isDefined) {
-                <div class="notice">
-                    <i class="icon icon-information">
-                        <span class="visually-hidden">Info</span>
-                    </i>
-                    <strong class="bold-small">
-                    @Messages(confirmationMessage.getOrElse(""))
-                    </strong>
-                </div>
-                <br>
-            }
-            <div class="column-full">
-                @if(form.hasErrors) {
-                    <div class="grid-row">
-                        <div class="column-two-thirds">
-
-                            <div class="error-summary" role="group" aria-labelledby="error-summary-login-form"
-                            tabindex="-1">
-
-                                <h1 class="heading-medium error-summary-heading"
-                                id="error-summary-login-form-heading">
-                                    This form has errors
-                                </h1>
-                                <p>
-                                    Please correct the following:
-                                </p>
-                            </div>
-                            <div class="form-group form-group-error">
-                                <ul>
-                                @form.errors.map { error =>
-                                    <li><span class="error-message">@Messages(error.message)</span></li>
-                                }
-                                </ul>
-                            </div>
-                        </div>
+            <h1 class="heading-xlarge">@Messages("create.client.details.title")</h1>
+                @if(confirmationMessage.isDefined) {
+                    <div class="alert alert-info">
+                        <strong>Info!</strong> @Messages(confirmationMessage.getOrElse(""))
                     </div>
                 }
-                @helper.form(routes.ApplicationController.postUpdateClient()) {
-                    @helper.CSRF.formField
-                    <div class="form-group">
-                        <fieldset>
-                            <legend id="BAS-login-form">
-                            </legend>
-                            <input type="hidden" id=_id name="_id" value="@client._id" type="text">
-                            <input type="hidden" id=clientName name="clientName" value="@client.clientName" type="text">
-                            <input type="hidden" id=clientID name="clientId" value="@client.clientId" type="text">
-                            <input type="hidden" id=clientSecret name="clientSecret" value="@client.clientSecret" type="text">
+                <div class="column-full">
+                    @if(form.hasErrors) {
+                        <div class="grid-row">
+                            <div class="column-two-thirds">
 
-                            <div class="form-group">
-                                <label class="form-label-bold" id="redirectURIsLbl" for="RedirectURIs">
-                                    Redirect URIs
-                                    <span class="form-hint">
-                                        Multiple URIs should be space separated
-                                    </span>
-                                </label>
-                                <input class="form-control" id="redirect_uriCtl" name="redirectURIs" value="@client.redirectURIs" type="text">
-                            </div>
+                                <div class="error-summary" role="group" aria-labelledby="error-summary-login-form"
+                                tabindex="-1">
 
-                            <div class="form-group">
-                                <label class="form-label-bold" id="imageURILbl" for="ImageURI">
-                                    Image URI
-                                    <span class="form-hint">
-                                        Optional
-                                    </span>
-                                </label>
-                                <input class="form-control" id="imageURICtl" name="imageURI" value="@client.imageURI" type="text">
+                                    <h1 class="heading-medium error-summary-heading"
+                                    id="error-summary-login-form-heading">
+                                        This form has errors
+                                    </h1>
+                                    <p>
+                                        Please correct the following:
+                                    </p>
+                                </div>
+                                <div class="form-group form-group-error">
+                                    <ul>
+                                    @form.errors.map { error =>
+                                        <li><span class="error-message">@Messages(error.message)</span></li>
+                                    }
+                                    </ul>
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="form-label-bold" id="contactNameLbl" for="ContactName">
-                                    Contact Name
-                                    <span class="form-hint">
-                                        Optional
-                                    </span>
-                                </label>
-                                <input class="form-control" id="contactNameCtl" name="contactName" value="@client.contactName" type="text">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label-bold" id="contactDetailsLbl" for="ContactDetails">
-                                    Contact Details
-                                    <span class="form-hint">
-                                        Optional
-                                    </span>
-                                </label>
-                                <input class="form-control" id="contactDetailsCtl" name="contactDetails" value="@client.contactDetails" type="text">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label-bold" id="serviceStartDateLbl" for="serviceStartDate">
-                                    Service Start Date
-                                    <span class="form-hint">
-                                        Optional - Format yyyy-MM-dd
-                                    </span>
-                                </label>
-                                <input class="form-control" id="serviceStartDateCtl" name="serviceStartDate" value="@client.serviceStartDate">
-                            </div>
-                        </fieldset>
-                    </div>
-                    <input class="button" type="submit" value="Update">
+                        </div>
                     }
-            </div>
+                    @helper.form(routes.ApplicationController.postUpdateClient()) {
+                        @helper.CSRF.formField
+                        <div class="form-group">
+                            <fieldset>
+                                <legend id="BAS-login-form">
+                                </legend>
+                                <input type="hidden" id=_id name="_id" value="@client._id" type="text">
+                                <input type="hidden" id=clientName name="clientName" value="@client.clientName" type="text">
+                                <input type="hidden" id=clientID name="clientId" value="@client.clientId" type="text">
+                                <input type="hidden" id=clientSecret name="clientSecret" value="@client.clientSecret" type="text">
+
+                                <div class="form-group">
+                                    <label class="form-label-bold" id="redirectURIsLbl" for="RedirectURIs">
+                                        Redirect URIs
+                                        <span class="form-hint">
+                                            Multiple URIs should be space separated
+                                        </span>
+                                    </label>
+                                    <input class="form-control" id="redirect_uriCtl" name="redirectURIs" value="@client.redirectURIs" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label-bold" id="imageURILbl" for="ImageURI">
+                                        Image URI
+                                        <span class="form-hint">
+                                            Optional
+                                        </span>
+                                    </label>
+                                    <input class="form-control" id="imageURICtl" name="imageURI" value="@client.imageURI" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label-bold" id="contactNameLbl" for="ContactName">
+                                        Contact Name
+                                        <span class="form-hint">
+                                            Optional
+                                        </span>
+                                    </label>
+                                    <input class="form-control" id="contactNameCtl" name="contactName" value="@client.contactName" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label-bold" id="contactDetailsLbl" for="ContactDetails">
+                                        Contact Details
+                                        <span class="form-hint">
+                                            Optional
+                                        </span>
+                                    </label>
+                                    <input class="form-control" id="contactDetailsCtl" name="contactDetails" value="@client.contactDetails" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label-bold" id="serviceStartDateLbl" for="serviceStartDate">
+                                        Service Start Date
+                                        <span class="form-hint">
+                                            Optional - Format yyyy-MM-dd
+                                        </span>
+                                    </label>
+                                    <input class="form-control" id="serviceStartDateCtl" name="serviceStartDate" value="@client.serviceStartDate">
+                                </div>
+                            </fieldset>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Update">
+                        }
+                </div>
         </div>
-    </main>
-}
+    }

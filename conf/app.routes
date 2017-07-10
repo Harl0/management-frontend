@@ -6,5 +6,4 @@ POST /client/update                 controllers.ApplicationController.postUpdate
 GET  /client/list                   controllers.ApplicationController.retrieveClientList
 GET  /client/detail                 controllers.ApplicationController.retrieveClientDetail(_id: String, message: Option[String])
 GET  /client/delete                 controllers.ApplicationController.deleteClient(_id: String)
-GET  /token/createKeys              controllers.ApplicationController.createTokenKeys
 GET  /assets/*file                  controllers.Assets.at(path="/public", file)
