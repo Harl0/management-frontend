@@ -7,4 +7,4 @@ GET  /client/list                   controllers.ApplicationController.retrieveCl
 GET  /client/detail                 controllers.ApplicationController.retrieveClientDetail(_id: String, message: Option[String])
 GET  /client/delete                 controllers.ApplicationController.deleteClient(_id: String)
 GET  /token/createKeys              controllers.ApplicationController.createTokenKeys
-GET  /BASassets/*file               controllers.Assets.at(path="/public", file)
+GET  /assets/*file                  controllers.Assets.at(path="/public", file)
