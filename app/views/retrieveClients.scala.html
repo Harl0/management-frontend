@@ -1,0 +1,49 @@
+@(client: Seq[Client])(implicit messages: Messages, request: RequestHeader)
+
+@main("create.listAll.title") {
+    <main id="content">
+        <div class="phase-banner">
+            <p>
+                <strong class="phase-tag">ALPHA</strong>
+                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+            </p>
+        </div>
+        <div class="column-full">
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script type="text/javascript" src='@routes.Assets.at("javascripts/deleteClient.js")'></script>
+        </div>
+        <h1 class="heading-xlarge">@Messages("create.listAll.title")</h1>
+        <div class="grid-row">
+            <div class="column-full">
+                <table id ="ResultSet">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Client Id</th>
+                            <th>Client Secret</th>
+                            <th>Start Date</th>
+                            <th>
+                                <button id="delete-submit" class="button" type="button">@Messages("client.delete")</button>
+                                <p> <label><input type="checkbox" id="delete-all"/></label></p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(c <- client) {
+                        <tr>
+                            <td style="display: none;">@c._id</td>
+                            <td><a href="@routes.ApplicationController.retrieveClientDetail(c._id, None)" id=@c.clientName>@c.clientName</a></td>
+                            <td id=@c.clientName-clientId>@c.clientId</td>
+                            <td id=@c.clientName-clientSecret>@c.clientSecret</td>
+                            <td id=@c.clientName-serviceStartDate>@c.serviceStartDate</td>
+                            <td><input id=@c.clientName-delete type="checkbox" name="delete" value="delete"></td>
+                        </tr>
+                    }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </main>
+}

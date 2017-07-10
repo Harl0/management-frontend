@@ -1,0 +1,1 @@
+GET  /               controllers.health.HealthCheckController.healthCheck
