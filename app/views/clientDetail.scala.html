@@ -16,8 +16,19 @@
         <a href="@routes.ApplicationController.retrieveClientList()" class="link-back">Back</a>
 
         <h1 class="heading-xlarge">@Messages("create.client.details.title")</h1>
-        <p><strong class="bold-small">@Messages(confirmationMessage.getOrElse(""))</strong></p>
         <div class="grid-row">
+
+            @if(confirmationMessage.isDefined) {
+                <div class="notice">
+                    <i class="icon icon-information">
+                        <span class="visually-hidden">Info</span>
+                    </i>
+                    <strong class="bold-small">
+                    @Messages(confirmationMessage.getOrElse(""))
+                    </strong>
+                </div>
+                <br>
+            }
             <div class="column-full">
                 @if(form.hasErrors) {
                     <div class="grid-row">

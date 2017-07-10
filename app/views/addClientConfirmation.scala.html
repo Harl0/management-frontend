@@ -1,4 +1,8 @@
-@(clientId: String, clientSecret: String)(implicit messages: Messages, request: RequestHeader)
+@(
+        clientId: String,
+        clientSecret: String,
+        clientCreateResult: String
+)(implicit messages: Messages, request: RequestHeader)
 
 @main("create.add.confirmation.title") {
 
@@ -20,13 +24,11 @@
                     <span class="visually-hidden">Info</span>
                 </i>
                 <strong class="bold-small">
-                    Client Created Successfully
+                @Messages(clientCreateResult)
                 </strong>
             </div>
-
+            <br>
             <div class="column-full">
-                <br>
-                <br>
                 <div class="form-group">
                     <fieldset>
                         <div class="form-group">

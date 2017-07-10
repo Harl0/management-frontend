@@ -1,7 +1,7 @@
 GET  /                              controllers.ApplicationController.home
 GET  /client/create                 controllers.ApplicationController.createClient
 POST /client/create                 controllers.ApplicationController.postCreateClient
-GET  /client/createConfirmation     controllers.ApplicationController.createClientConfirmation(clientId: String, clientSecret: String)
+GET  /client/createConfirmation     controllers.ApplicationController.createClientConfirmation(clientId: String, clientSecret: String, creatClientResponse: String)
 POST /client/update                 controllers.ApplicationController.postUpdateClient
 GET  /client/list                   controllers.ApplicationController.retrieveClientList
 GET  /client/detail                 controllers.ApplicationController.retrieveClientDetail(_id: String, message: Option[String])

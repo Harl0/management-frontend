@@ -5,13 +5,12 @@ import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import connectors.{ClientConnector, TokenConnector}
 import models.ClientForm._
-import models.ClientRegistrationResponse
+import models.{Client, ClientRegistrationResponse}
 import play.api.i18n.I18nSupport
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 import utils.Constants._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -50,7 +49,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       data => {
         logger.info("Sending: " + Json.toJson(data))
         clientConnector.createClient(data).map { x =>
-          Redirect(routes.ApplicationController.createClientConfirmation(x.clientId, x.clientSecret), FOUND)
+          Redirect(routes.ApplicationController.createClientConfirmation(x.clientId, x.clientSecret, processClientCreateResponse(x)), FOUND)
         }.recover {
           case e =>
             logger.error("There was an error in adding client : " + e.getMessage)
@@ -60,11 +59,26 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
     )
   }
 
+  def processClientCreateResponse(data: ClientRegistrationResponse): String = {
+    data.clientId match {
+      case "No Data" => "Client Registration Failed"
+      case _ => "Client Registration Completed"
+    }
+  }
+
+  def processClientUpdateResponse(data: Client): String = {
+    data.clientId match {
+      case "No Data" => "Client Update Failed"
+      case _ => clientUpdateSuccess
+    }
+  }
+
   /**
     * GET   /client/createConfirmation
     */
-  def createClientConfirmation(clientId: String, clientSecret: String): Action[AnyContent] = Action { implicit request: RequestHeader =>
-    Ok(views.html.addClientConfirmation(clientId, clientSecret))
+  def createClientConfirmation(clientId: String, clientSecret: String, createClientResponse: String):
+  Action[AnyContent] = Action { implicit request: RequestHeader =>
+    Ok(views.html.addClientConfirmation(clientId, clientSecret, createClientResponse))
   }
 
   /**
@@ -110,8 +124,8 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
         },
         data => {
           logger.info("Sending: " + Json.toJson(data))
-          clientConnector.updateClient(data).map { _ =>
-            Redirect(routes.ApplicationController.retrieveClientDetail(data._id, Some("update.client.confirmation")), FOUND)
+          clientConnector.updateClient(data).map { x =>
+            Redirect(routes.ApplicationController.retrieveClientDetail(x._id, Some(processClientUpdateResponse(x))), FOUND)
           }.recover {
             case e =>
               logger.error("There was an error in adding client : " + e.getMessage)
