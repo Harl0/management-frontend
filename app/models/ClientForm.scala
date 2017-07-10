@@ -60,16 +60,16 @@ object ClientForm {
   )(Client.apply)(Client.unapply))
 
   val clients = List(
-    ClientInputFields("Department Name", "clientName", "Mandatory"),
-    ClientInputFields("Redirect URIs", "redirect_uri", "Mandatory - multiple URIs should be space separated"),
-    ClientInputFields("Image URIs", "imageURI", "Optional"),
-    ClientInputFields("Contact Name", "contactName", "Optional"),
-    ClientInputFields("Contact Details", "contactDetails", "Optional"),
-    ClientInputFields("Service Start Date", "serviceStartDate", "Optional - Format yyyy-MM-dd")
+    ClientInputFields("Department Name", "clientName", None),
+    ClientInputFields("Redirect URIs", "redirect_uri", Some("Multiple URIs should be space separated")),
+    ClientInputFields("Image URIs", "imageURI", Some("Optional")),
+    ClientInputFields("Contact Name", "contactName", Some("Optional")),
+    ClientInputFields("Contact Details", "contactDetails", Some("Optional")),
+    ClientInputFields("Service Start Date", "serviceStartDate", Some("Optional - Format yyyy-MM-dd"))
   )
 
   val clientsView = List(
-    ClientInputFields("Client ID", "clientID", "Mandatory"),
-    ClientInputFields("Client Name", "clientName", "Mandatoryd")
+    ClientInputFields("Client ID", "clientID", None),
+    ClientInputFields("Client Name", "clientName", None)
   )
 }
