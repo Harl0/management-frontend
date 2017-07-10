@@ -1,23 +1,13 @@
 @()(implicit messages: Messages, request: RequestHeader)
 
 @main("title.home") {
-    <main id="content">
-        <div class="phase-banner">
-            <p>
-                <strong class="phase-tag">ALPHA</strong>
-                <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
-            </p>
-        </div>
+    <div class="container">
+        <h1>@Messages("title.home")</h1>
+        <ol>
+            <li><a href="@routes.ApplicationController.createClient()" id="createClient" >Create Client </a></li>
+            <li><a href="@routes.ApplicationController.retrieveClientList()" id="clientList">Client List</a></li>
+            <li><a href=@routes.ApplicationController.createTokenKeys() id="tokenCreateKeys">Token Create Keys</a></li>
+        </ol>
+    </div>
 
-        <h1 class="heading-xlarge">@Messages("title.home")</h1>
-        <div class="grid-row">
-            <div class="column-full">
-                <ol>
-                    <li><a href="@routes.ApplicationController.createClient()" id="createClient" >Create Client </a></li>
-                    <li><a href="@routes.ApplicationController.retrieveClientList()" id="clientList">Client List</a></li>
-                    <li><a href=@routes.ApplicationController.createTokenKeys() id="tokenCreateKeys">Token Create Keys</a></li>
-                </ol>
-            </div>
-        </div>
-    </main>
 }
