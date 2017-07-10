@@ -1,7 +1,7 @@
 package models
 
-import play.api.libs.json.Json
-
+import play.api.libs.json.{Json, OFormat}
+import utils.Constants._
 /**
   * Created by abhishek on 21/06/17.
   */
@@ -10,14 +10,13 @@ case class ClientRegistrationResponse(clientId: String,
                                       redirectURI: String)
 
 object ClientRegistrationResponse {
-  implicit val clientRegisterSuccessformat = Json.format[ClientRegistrationResponse]
+  implicit val clientRegisterSuccessformat: OFormat[ClientRegistrationResponse] = Json.format[ClientRegistrationResponse]
 
   def buildEmptyClientRegistrationResponse: ClientRegistrationResponse = {
     ClientRegistrationResponse(
-      "No Data",
-      "No Data",
-      "No Data"
+      NO_DATA,
+      NO_DATA,
+      NO_DATA
     )
   }
-
 }

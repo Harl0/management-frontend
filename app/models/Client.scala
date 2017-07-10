@@ -1,7 +1,7 @@
 package models
 
 import java.time.LocalDate
-
+import utils.Constants._
 import play.api.libs.json.Json
 
 /**
@@ -28,14 +28,14 @@ object Client {
 
   def buildEmptyClient: Client = {
     Client(
-      "No Data",
-      "No Data",
-      "No Data",
-      "No Data",
-      "No Data",
-      Some("No Data"),
-      Some("No Data"),
-      Some("No Data"),
+      NO_DATA,
+      NO_DATA,
+      NO_DATA,
+      NO_DATA,
+      NO_DATA,
+      Some(NO_DATA),
+      Some(NO_DATA),
+      Some(NO_DATA),
       Some(LocalDate.now()))
   }
 }

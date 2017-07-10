@@ -61,15 +61,15 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
 
   def processClientCreateResponse(data: ClientRegistrationResponse): String = {
     data.clientId match {
-      case "No Data" => clientRegistrationFailure
-      case _ => clientRegistrationSuccess
+      case NO_DATA => CLIENT_REGISTRATION_FAILURE
+      case _ => CLIENT_REGISTRATION_SUCCESS
     }
   }
 
   def processClientUpdateResponse(data: Client): String = {
     data.clientId match {
-      case "No Data" => clientUpdateFailure
-      case _ => clientUpdateSuccess
+      case NO_DATA => CLIENT_UPDATE_FAILURE
+      case _ => CLIENT_UPDATE_SUCCESS
     }
   }
 
