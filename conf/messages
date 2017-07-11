@@ -11,6 +11,6 @@ create.add.confirmation.title=Client Create Confirmation
 client.registration.success=Client Registration Completed
 client.registration.failure=Client Registration Failure
 client.update.success=Client Update Completed
-client.update.failure=Client Update Failed
+client.update.failure=Client Update Failure
 client.delete=Delete
 button.submit=Submit
