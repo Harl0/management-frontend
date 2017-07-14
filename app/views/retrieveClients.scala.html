@@ -32,7 +32,7 @@
                     @for(c <- client) {
                         <tr>
                             <td style="display: none;">@c._id</td>
-                            <td><a href="@routes.ClientController.retrieveClientDetail(c._id, None)" id=@c.clientName>@c.clientName</a></td>
+                            <td><a href="@routes.ClientRetrieveController.retrieveClientDetail(c._id, None)" id=@c.clientName>@c.clientName</a></td>
                             <td id=@c.clientName-clientId>@c.clientId</td>
                             <td id=@c.clientName-clientSecret>@c.clientSecret</td>
                             <td id=@c.clientName-serviceStartDate>@c.serviceStartDate</td>

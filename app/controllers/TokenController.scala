@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
-import connectors.{ClientConnector, TokenConnector}
+import connectors.{ClientRetrieveConnector, TokenConnector}
 import models.ClientForm._
 import models.{Client, ClientRegistrationResponse}
 import play.api.i18n.I18nSupport

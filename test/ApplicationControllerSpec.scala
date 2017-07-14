@@ -1,7 +1,7 @@
 import akka.stream.Materializer
 import config.AppConfig
-import connectors.{ClientConnector, TokenConnector}
-import controllers.ClientController
+import connectors.{ClientRetrieveConnector, TokenConnector}
+import controllers.ClientUpdateController
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -18,13 +18,13 @@ class ApplicationControllerSpec extends PlaySpec
   val mockWsClient = mock[WSClient]
   val mockAppConfig = mock[AppConfig]
   val mockComponents = mock[ControllerComponents]
-  val mockClientConnector = mock[ClientConnector]
+  val mockClientConnector = mock[ClientRetrieveConnector]
   val mockTokenConnector = mock[TokenConnector]
 
   "home" should {
     "return the home page" in {
 
-      val applicationController = new ClientController(
+      val applicationController = new ClientUpdateController(
         mockWsClient, mockAppConfig, stubControllerComponents(), mockClientConnector, mockTokenConnector)
 
       val action = applicationController.home().apply(FakeRequest())
