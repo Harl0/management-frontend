@@ -18,16 +18,9 @@ import scala.concurrent.Future
   * Created by jason on 24/05/17.
   */
 
-class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
-                                      clientConnector: ClientConnector, tokenConnector: TokenConnector)
+class ClientController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
+                                 clientConnector: ClientConnector, tokenConnector: TokenConnector)
   extends AbstractController(cc) with I18nSupport with LazyLogging {
-
-  /**
-    * GET   /
-    */
-  def home(): Action[AnyContent] = Action { implicit request: RequestHeader =>
-    Ok(views.html.home())
-  }
 
   /**
     * GET   /client/create
@@ -49,7 +42,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       data => {
         logger.info("Sending: " + Json.toJson(data))
         clientConnector.createClient(data).map { x =>
-          Redirect(routes.ApplicationController.createClientConfirmation(x.clientId, x.clientSecret, processClientCreateResponse(x)), FOUND)
+          Redirect(routes.ClientController.createClientConfirmation(x.clientId, x.clientSecret, processClientCreateResponse(x)), FOUND)
         }.recover {
           case e =>
             logger.error("There was an error in adding client : " + e.getMessage)
@@ -125,7 +118,7 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
         data => {
           logger.info("Sending: " + Json.toJson(data))
           clientConnector.updateClient(data).map { x =>
-            Redirect(routes.ApplicationController.retrieveClientDetail(x._id, Some(processClientUpdateResponse(x))), FOUND)
+            Redirect(routes.ClientController.retrieveClientDetail(x._id, Some(processClientUpdateResponse(x))), FOUND)
           }.recover {
             case e =>
               logger.error("There was an error in adding client : " + e.getMessage)
@@ -147,14 +140,4 @@ class ApplicationController @Inject()(ws: WSClient, config: AppConfig, cc: Contr
       }
   }
 
-  /**
-    * GET   /token/createKeys
-    */
-  def createTokenKeys(): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
-    tokenConnector.createKeys.map { _ =>
-      Ok(views.html.tokenCreateKeys())
-    }.recover {
-      case ex: Exception => InternalServerError
-    }
-  }
 }

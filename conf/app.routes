@@ -1,10 +1,10 @@
-GET  /                              controllers.ApplicationController.home
-GET  /client/create                 controllers.ApplicationController.createClient
-POST /client/create                 controllers.ApplicationController.postCreateClient
-GET  /client/createConfirmation     controllers.ApplicationController.createClientConfirmation(clientId: String, clientSecret: String, creatClientResponse: String)
-POST /client/update                 controllers.ApplicationController.postUpdateClient
-GET  /client/list                   controllers.ApplicationController.retrieveClientList
-GET  /client/detail                 controllers.ApplicationController.retrieveClientDetail(_id: String, message: Option[String])
-GET  /client/delete                 controllers.ApplicationController.deleteClient(_id: String)
-GET  /token/createKeys              controllers.ApplicationController.createTokenKeys
+GET  /                              controllers.HomeController.home
+GET  /client/create                 controllers.ClientController.createClient
+POST /client/create                 controllers.ClientController.postCreateClient
+GET  /client/createConfirmation     controllers.ClientController.createClientConfirmation(clientId: String, clientSecret: String, creatClientResponse: String)
+POST /client/update                 controllers.ClientController.postUpdateClient
+GET  /client/list                   controllers.ClientController.retrieveClientList
+GET  /client/detail                 controllers.ClientController.retrieveClientDetail(_id: String, message: Option[String])
+GET  /client/delete                 controllers.ClientController.deleteClient(_id: String)
+GET  /token/createKeys              controllers.TokenController.createTokenKeys
 GET  /BASassets/*file               controllers.Assets.at(path="/public", file)

@@ -15,7 +15,8 @@ class TokenConnector @Inject()(ws: WSClient, config: AppConfig) {
   def createKeys: Future[Boolean] = {
     ws.url(s"${config.tokenUrl}/createKeys")
       .get().map {
-      case res if res.status == 200 => true
+      case res if res.status == 200 =>
+        true
       case _ => false
     }.recover {
       case e => Logger.error("Unable to create Keys")
