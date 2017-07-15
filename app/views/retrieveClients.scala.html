@@ -9,7 +9,7 @@
             </p>
         </div>
         <div class="column-full">
-            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script type="text/javascript" src='@routes.Assets.at("javascripts/deleteClient.js")'></script>
         </div>
         <h1 class="heading-xlarge">@Messages("create.listAll.title")</h1>
@@ -24,7 +24,7 @@
                             <th>Start Date</th>
                             <th>
                                 <button id="delete-submit" class="button" type="button">@Messages("client.delete")</button>
-                                <p> <label><input type="checkbox" id="delete-all"/></label></p>
+                                <p><input type="checkbox" id="delete-all"/></p>
                             </th>
                         </tr>
                     </thead>
@@ -40,9 +40,7 @@
                         </tr>
                     }
                     </tbody>
-
                 </table>
-
             </div>
         </div>
     </main>
