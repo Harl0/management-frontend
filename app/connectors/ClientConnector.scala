@@ -8,19 +8,18 @@ import play.api.Logger
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 
-import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 /**
   * Created by jason on 29/06/17.
   */
-class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
+class ClientConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
 
   def createClient(client: ClientRegistrationForm): Future[ClientRegistrationResponse]
   = {
     ws
-      .url(s"${config.clientUrl}/create")
+      .url(s"${appConfig.clientUrl}/create")
       .withHttpHeaders("Accept" -> "application/json")
       .post(Json.toJson(client))
       .map {
@@ -39,7 +38,7 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
   def updateClient(client: Client): Future[Client]
   = {
     ws
-      .url(s"${config.clientUrl}/update")
+      .url(s"${appConfig.clientUrl}/update")
       .withHttpHeaders("Accept" -> "application/json")
       .post(Json.toJson(client))
       .map {
@@ -58,7 +57,7 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
   def retrieveClientList: Future[Seq[Client]]
   = {
     ws
-      .url(s"${config.clientUrl}/retrieve")
+      .url(s"${appConfig.clientUrl}/retrieve")
       .get().map {
       case res if res.status == 200 =>
         Logger.info("Received status : " + res.status)
@@ -74,7 +73,7 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
   def retrieveClientDetail(_id: String): Future[Client]
   = {
     Logger.info("Sending ID " + _id)
-    val request = s"${config.clientUrl}/clientDetail?_id=${_id}"
+    val request = s"${appConfig.clientUrl}/clientDetail?_id=${_id}"
     ws
       .url(request)
       .get().map {
@@ -89,7 +88,7 @@ class ClientConnector @Inject()(ws: WSClient, config: AppConfig) {
 
   def deleteClient(_id: String): Future[Boolean]
   = {
-    val request = s"${config.clientUrl}/delete?_id=${_id}"
+    val request = s"${appConfig.clientUrl}/delete?_id=${_id}"
     ws
       .url(request)
       .get().map {

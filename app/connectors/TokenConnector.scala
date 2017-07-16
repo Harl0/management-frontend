@@ -10,10 +10,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-class TokenConnector @Inject()(ws: WSClient, config: AppConfig) {
+class TokenConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
 
   def createKeys: Future[Boolean] = {
-    ws.url(s"${config.tokenUrl}/createKeys")
+    ws.url(s"${appConfig.tokenUrl}/createKeys")
       .get().map {
       case res if res.status == 200 => true
       case _ => false
