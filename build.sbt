@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   ws,
   guice,
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test"
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test",
+  "org.mockito" % "mockito-core" % "1.9.0" % "test"
 )
 
 //SCoverage

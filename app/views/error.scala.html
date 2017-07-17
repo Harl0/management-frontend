@@ -1,4 +1,4 @@
-@()(implicit messages: Messages, request: RequestHeader)
+@(errorMessage: String, backButton: String)(implicit messages: Messages, request: RequestHeader)
 @main("Error page") {
 <main id="content">
     <div class="phase-banner">
@@ -9,14 +9,21 @@
 
     </div>
 
-    <a href="@routes.ApplicationController.createClient()" class="link-back">Back</a>
-    <h1 class="heading-xlarge">Create Client </h1>
+    @if(backButton == "home"){
+        <a href="@routes.HomeController.home()" class="link-back">Back</a>
+    } else {
+        <a href="@routes.ClientRetrieveController.retrieveClientList()" class="link-back">Back</a>
+    }
+
+    <h1 class="heading-xlarge">Error</h1>
 
     <div class="grid-row">
         <div class="column-full">
             <div class="form-group">
                 <fieldset>
-                    <p>There was an error processing your request.</p>
+                    <p>There was an error processing your request:</p>
+                    <br>
+                    <pre>@errorMessage</pre>
                 </fieldset>
             </div>
         </div>
