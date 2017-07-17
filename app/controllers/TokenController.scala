@@ -25,10 +25,10 @@ class TokenController @Inject()(cc: ControllerComponents, tokenConnector: TokenC
     * GET   /token/createKeys
     */
   def createTokenKeys(): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
-    tokenConnector.createKeys.map { _ =>
-      Ok(views.html.tokenCreateKeys())
-    }.recover {
-      case ex: Exception => InternalServerError
+    tokenConnector.createKeys.map {
+      case Right(success) => Ok(views.html.tokenCreateKeys())
+      case Left(error) =>logger.error("There was an error in creating a token : " + error)
+        Ok(views.html.error(error,HOME_PAGE))
     }
   }
 }

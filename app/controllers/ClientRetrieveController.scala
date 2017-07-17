@@ -9,7 +9,7 @@ import models.ClientForm._
 import play.api.i18n.I18nSupport
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-
+import utils.Constants._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
@@ -43,7 +43,7 @@ class ClientRetrieveController @Inject()(ws: WSClient, config: AppConfig, cc: Co
     implicit request =>
       clientConnector.retrieveClientList.map {
         case Right(clientList) => Ok(views.html.retrieveClients(clientList))
-        case error@_ => Ok(views.html.error())
+        case error@_ => Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),HOME_PAGE))
       }
   }
 
@@ -55,7 +55,7 @@ class ClientRetrieveController @Inject()(ws: WSClient, config: AppConfig, cc: Co
     implicit request: RequestHeader =>
       clientConnector.retrieveClientDetail(_id).map {
         case Right(clientDetails) => Ok(views.html.clientDetail(clientDetails, clientViewForm, message))
-        case error@_ => Ok(views.html.error())
+        case error@_ => Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),CLIENT_LIST_PAGE))
       }
   }
 
@@ -67,7 +67,7 @@ class ClientRetrieveController @Inject()(ws: WSClient, config: AppConfig, cc: Co
       clientConnector.deleteClient(_id).map { _ =>
         Ok
       }.recover {
-        case ex: Exception => Ok(views.html.error())
+        case ex: Exception => Ok(views.html.error(ex.getMessage,CLIENT_LIST_PAGE))
       }
   }
 
