@@ -15,11 +15,6 @@ class HomeControllerSpec extends PlaySpec
   with MockitoSugar with ScalaFutures with GuiceOneAppPerTest with Results {
 
   implicit lazy val materializer: Materializer = app.materializer
-  val mockWsClient = mock[WSClient]
-  val mockAppConfig = mock[AppConfig]
-  val mockComponents = mock[ControllerComponents]
-  val mockClientConnector = mock[ClientRetrieveConnector]
-  val mockTokenConnector = mock[TokenConnector]
 
   "home" should {
     "return the home page" in {
