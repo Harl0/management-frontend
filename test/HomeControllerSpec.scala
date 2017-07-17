@@ -1,7 +1,7 @@
 import akka.stream.Materializer
 import config.AppConfig
 import connectors.{ClientRetrieveConnector, TokenConnector}
-import controllers.ClientUpdateController
+import controllers.{ClientUpdateController, HomeController}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -11,7 +11,7 @@ import play.api.mvc.{ControllerComponents, Results}
 import play.api.test.Helpers._
 import play.api.test._
 
-class ApplicationControllerSpec extends PlaySpec
+class HomeControllerSpec extends PlaySpec
   with MockitoSugar with ScalaFutures with GuiceOneAppPerTest with Results {
 
   implicit lazy val materializer: Materializer = app.materializer
@@ -24,8 +24,7 @@ class ApplicationControllerSpec extends PlaySpec
   "home" should {
     "return the home page" in {
 
-      val applicationController = new ClientUpdateController(
-        mockWsClient, mockAppConfig, stubControllerComponents(), mockClientConnector, mockTokenConnector)
+      val applicationController = new HomeController(stubControllerComponents())
 
       val action = applicationController.home().apply(FakeRequest())
 
