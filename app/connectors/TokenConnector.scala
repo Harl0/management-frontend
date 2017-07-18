@@ -20,7 +20,7 @@ class TokenConnector @Inject()(ws: WSClient, appConfig: AppConfig, errorHelper: 
       .get().map {
       case res if res.status == 200 => Right(true)
       case failure@_ => Logger.error(DEFAULT_TOKEN_ERROR)
-        val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
+        val errorMessage = errorHelper.non200Error(failure.status,TOKEN_SERVICE)
         Logger.error(errorMessage, new Throwable(DEFAULT_TOKEN_ERROR))
         Left(errorMessage)
     }.recover {

@@ -19,7 +19,7 @@ import scala.concurrent.Future
   * Created by jason on 24/05/17.
   */
 
-class ClientUpdateController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
+class ClientUpdateController @Inject()(cc: ControllerComponents,
                                        clientUpdateConnector: ClientUpdateConnector,
                                        clientRetrieveConnector: ClientRetrieveConnector,
                                        helper: ClientHelper)
