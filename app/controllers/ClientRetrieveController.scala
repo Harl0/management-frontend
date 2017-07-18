@@ -16,8 +16,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * Created by jason on 24/05/17.
   */
 
-class ClientRetrieveController @Inject()(ws: WSClient, config: AppConfig, cc: ControllerComponents,
-                                         clientConnector: ClientRetrieveConnector, helper: ClientHelper)
+class ClientRetrieveController @Inject()(cc: ControllerComponents,
+                                         clientConnector: ClientRetrieveConnector)
   extends AbstractController(cc) with I18nSupport with LazyLogging {
 
   /**
@@ -64,10 +64,9 @@ class ClientRetrieveController @Inject()(ws: WSClient, config: AppConfig, cc: Co
     */
   def deleteClient(_id: String): Action[AnyContent] = Action.async {
     implicit request =>
-      clientConnector.deleteClient(_id).map { _ =>
-        Ok
-      }.recover {
-        case ex: Exception => Ok(views.html.error(ex.getMessage,CLIENT_LIST_PAGE))
+      clientConnector.deleteClient(_id).map {
+        case Right(success) => Ok
+        case error@_ => Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),CLIENT_LIST_PAGE))
       }
   }
 
