@@ -20,4 +20,23 @@ object Constants {
   val TOKEN_SERVICE = "Token Service"
 
   val NO_DATA = "NO_DATA"
+
+  val CLIENT_LIST_REQUEST = "Client List Requested"
+  val CLIENT_LIST_RESPONSE = "Client List Response"
+
+  val CLIENT_DETAIL_REQUEST = "Client Detail Requested"
+  val CLIENT_DETAIL_RESPONSE = "Client Detail Response"
+
+  val CLIENT_DELETE_REQUEST = "Client Delete Requested"
+  val CLIENT_DELETE_RESPONSE = "Client Delete Response"
+
+  val CLIENT_CREATE_REQUEST = "Client Create Requested"
+  val CLIENT_CREATE_RESPONSE = "Client Create Response"
+
+  val CLIENT_UPDATE_REQUEST = "Client Update Requested"
+  val CLIENT_UPDATE_RESPONSE = "Client Update Response"
+
+  val TOKEN_CREATE_REQUEST = "Token Create Requested"
+  val TOKEN_CREATE_RESPONSE = "Token Create Response"
+
 }
