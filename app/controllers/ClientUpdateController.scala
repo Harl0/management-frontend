@@ -7,11 +7,13 @@ import connectors.{ClientRetrieveConnector, ClientUpdateConnector}
 import helpers.ClientHelper
 import models.Client
 import models.ClientForm._
+import models.Log._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 import utils.Constants._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -30,16 +32,22 @@ class ClientUpdateController @Inject()(cc: ControllerComponents,
     */
 
   def postCreateClient: Action[AnyContent] = Action.async { implicit request =>
+    val headers = Seq(
+      s"method=${request.method}",
+      s"""uri="${request.uri}"""",
+      s"""remote_address=${request.remoteAddress}"""
+    ).mkString(", ")
+    logger.info(HTTPRequestReceived(CLIENT_UPDATE_REQUEST, headers))
     clientRegistrationForm.bindFromRequest.fold(
       formWithErrors => {
         Future(BadRequest(views.html.createClient(clients, formWithErrors)))
       },
       data => {
-        logger.info("Sending: " + Json.toJson(data))
+        logger.info(HTTPPOSTRequestReceived(CLIENT_CREATE_REQUEST, request.body.toString))
         clientUpdateConnector.createClient(data).map {
           case Right(clientResponse) => Redirect(routes.ClientRetrieveController.createClientConfirmation(
               clientResponse.clientId, clientResponse.clientSecret, helper.processClientCreateResponse(clientResponse)), FOUND)
-          case error@_ => logger.error("There was an error in adding client : " + error.left.getOrElse(DEFAULT_ERROR))
+          case error@_ =>
             Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),HOME_PAGE))
         }
       }
@@ -52,6 +60,12 @@ class ClientUpdateController @Inject()(cc: ControllerComponents,
 
   def postUpdateClient: Action[AnyContent] = Action.async {
     implicit request =>
+      val headers = Seq(
+        s"method=${request.method}",
+        s"""uri="${request.uri}"""",
+        s"""remote_address=${request.remoteAddress}"""
+      ).mkString(", ")
+      logger.info(HTTPRequestReceived(CLIENT_UPDATE_REQUEST, headers))
       clientViewForm.bindFromRequest.fold(
         formWithErrors => {
           val id = request.body.asFormUrlEncoded.collect {
@@ -59,15 +73,16 @@ class ClientUpdateController @Inject()(cc: ControllerComponents,
           }.getOrElse("")
           clientRetrieveConnector.retrieveClientDetail(id) map {
             case Right(clientData) => BadRequest(views.html.clientDetail(clientData, formWithErrors, None))
-            case error@_ => Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),CLIENT_LIST_PAGE))
+            case error@_ =>
+              Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),CLIENT_LIST_PAGE))
           }
         },
         data => {
-          logger.info("Sending: " + Json.toJson(data))
+          logger.info(HTTPPOSTRequestReceived(CLIENT_UPDATE_REQUEST, request.body.toString))
           clientUpdateConnector.updateClient(data).map {
             case Right(client) => Redirect(routes.ClientRetrieveController.retrieveClientDetail(client._id,
               Some(helper.processClientUpdateResponse(client))), FOUND)
-            case error@_ => logger.error("There was an error in adding client : " + error.left.getOrElse(DEFAULT_ERROR))
+            case error@_ =>
               Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),CLIENT_LIST_PAGE))
           }
         }

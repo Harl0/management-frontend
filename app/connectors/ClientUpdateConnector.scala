@@ -1,14 +1,17 @@
 package connectors
 
 import com.google.inject.Inject
+import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import helpers.ErrorHelper
 import models.ClientForm.ClientRegistrationForm
+import models.Log.processResponse
 import models.{Client, ClientRegistrationResponse}
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import utils.Constants._
+import play.api.http.Status._
 
 import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -17,7 +20,7 @@ import scala.concurrent.Future
 /**
   * Created by jason on 29/06/17.
   */
-class ClientUpdateConnector @Inject()(ws: WSClient, config: AppConfig, errorHelper: ErrorHelper) {
+class ClientUpdateConnector @Inject()(ws: WSClient, config: AppConfig, errorHelper: ErrorHelper) extends LazyLogging {
 
   def createClient(client: ClientRegistrationForm): Future[Either[String,ClientRegistrationResponse]]
   = {
@@ -26,18 +29,16 @@ class ClientUpdateConnector @Inject()(ws: WSClient, config: AppConfig, errorHelp
       .withHttpHeaders("Accept" -> "application/json")
       .post(Json.toJson(client))
       .map {
-        case res if res.status == 200 =>
-          Logger.info("Received status : " + res.status)
-          Logger.info("Received data: " + res.json.as[ClientRegistrationResponse])
+        case res if res.status == OK =>
           Right(res.json.as[ClientRegistrationResponse])
-        case failure@_ => val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
-          Logger.error("Unable to retrieve data")
-          Logger.error(errorMessage)
+        case failure@_ =>
+          val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
+          logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
           Left(errorMessage)
       }.recover {
-      case e => val errorMessage = errorHelper.internalError(e.getMessage)
-        Logger.error("Unable to retrieve data")
-        Logger.error(errorMessage)
+      case e =>
+        val errorMessage = errorHelper.internalError(e.getMessage)
+        logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
         Left(errorMessage)
     }
   }
@@ -49,20 +50,17 @@ class ClientUpdateConnector @Inject()(ws: WSClient, config: AppConfig, errorHelp
       .withHttpHeaders("Accept" -> "application/json")
       .post(Json.toJson(client))
       .map {
-        case res if res.status == 200 =>
-          Logger.info("Received status : " + res.status)
-          Logger.info("Received data: " + res.json.as[Client])
+        case res if res.status == OK =>
           Right(res.json.as[Client])
-        case failure@_ => val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
-          Logger.error("Unable to retrieve data")
-          Logger.error(errorMessage)
+        case failure@_ =>
+          val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
+          logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
           Left(errorMessage)
       }.recover {
-      case e => val errorMessage = errorHelper.internalError(e.getMessage)
-        Logger.error("Unable to retrieve data")
-        Logger.error(errorMessage)
+      case e =>
+        val errorMessage = errorHelper.internalError(e.getMessage)
+        logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
         Left(errorMessage)
     }
   }
-
 }

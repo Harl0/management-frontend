@@ -3,6 +3,7 @@ package controllers
 import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import connectors.TokenConnector
+import models.Log.{HTTPRequestReceived, processResponse}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import utils.Constants._
@@ -19,9 +20,15 @@ class TokenController @Inject()(cc: ControllerComponents, tokenConnector: TokenC
     * GET   /token/createKeys
     */
   def createTokenKeys(): Action[AnyContent] = Action.async { implicit request: RequestHeader =>
+    val headers = Seq(
+      s"method=${request.method}",
+      s"""uri="${request.uri}"""",
+      s"""remote_address=${request.remoteAddress}"""
+    ).mkString(", ")
+    logger.info(HTTPRequestReceived(TOKEN_CREATE_REQUEST, headers))
     tokenConnector.createKeys.map {
       case Right(success) => Ok(views.html.tokenCreateKeys())
-      case error@_ =>logger.error("There was an error in creating a token : " + error)
+      case error@_ =>
         Ok(views.html.error(error.left.getOrElse(DEFAULT_ERROR),HOME_PAGE))
     }
   }
