@@ -7,27 +7,27 @@ import play.api.libs.json.Json
 /**
   * Created by jason on 29/06/17.
   */
-case class Client(
+case class Collector(
                    _id: String,
-                   clientName: String,
+                   collectorName: String,
                    redirectURIs: String,
-                   clientId: String,
-                   clientSecret: String,
+                   collectorId: String,
+                   collectorSecret: String,
                    imageURI: Option[String] = None,
                    contactName: Option[String] = None,
                    contactDetails: Option[String] = None,
                    serviceStartDate: Option[LocalDate] = None
                  )
 
-object Client {
-  implicit val formats = Json.format[Client]
+object Collector {
+  implicit val formats = Json.format[Collector]
 
-  def buildEmptyClientSeq: Seq[Client] = {
-    Seq(buildEmptyClient)
+  def buildEmptyCollectorSeq: Seq[Collector] = {
+    Seq(buildEmptyCollector)
   }
 
-  def buildEmptyClient: Client = {
-    Client(
+  def buildEmptyCollector: Collector = {
+    Collector(
       NO_DATA,
       NO_DATA,
       NO_DATA,

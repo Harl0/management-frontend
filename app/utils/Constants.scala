@@ -5,36 +5,36 @@ package utils
   */
 object Constants {
 
-  val CLIENT_REGISTRATION_SUCCESS = "client.registration.success"
-  val CLIENT_REGISTRATION_FAILURE = "client.registration.failure"
-  val CLIENT_UPDATE_SUCCESS = "client.update.success"
-  val CLIENT_UPDATE_FAILURE = "client.update.failure"
+  val COLLECTOR_REGISTRATION_SUCCESS = "collector.registration.success"
+  val COLLECTOR_REGISTRATION_FAILURE = "collector.registration.failure"
+  val COLLECTOR_UPDATE_SUCCESS = "collector.update.success"
+  val COLLECTOR_UPDATE_FAILURE = "collector.update.failure"
 
-  val CLIENT_LIST_PAGE = "clientList"
+  val COLLECTOR_LIST_PAGE = "collectorList"
   val HOME_PAGE = "home"
 
   val DEFAULT_ERROR = "Unknown Error"
   val DEFAULT_TOKEN_ERROR = "Unable to create Keys"
 
-  val CLIENT_SERVICE = "Client Service"
+  val COLLECTOR_SERVICE = "Collector Service"
   val TOKEN_SERVICE = "Token Service"
 
   val NO_DATA = "NO_DATA"
 
-  val CLIENT_LIST_REQUEST = "Client List Requested"
-  val CLIENT_LIST_RESPONSE = "Client List Response"
+  val COLLECTOR_LIST_REQUEST = "Collector List Requested"
+  val COLLECTOR_LIST_RESPONSE = "Collector List Response"
 
-  val CLIENT_DETAIL_REQUEST = "Client Detail Requested"
-  val CLIENT_DETAIL_RESPONSE = "Client Detail Response"
+  val COLLECTOR_DETAIL_REQUEST = "Collector Detail Requested"
+  val COLLECTOR_DETAIL_RESPONSE = "Collector Detail Response"
 
-  val CLIENT_DELETE_REQUEST = "Client Delete Requested"
-  val CLIENT_DELETE_RESPONSE = "Client Delete Response"
+  val COLLECTOR_DELETE_REQUEST = "Collector Delete Requested"
+  val COLLECTOR_DELETE_RESPONSE = "Collector Delete Response"
 
-  val CLIENT_CREATE_REQUEST = "Client Create Requested"
-  val CLIENT_CREATE_RESPONSE = "Client Create Response"
+  val COLLECTOR_CREATE_REQUEST = "Collector Create Requested"
+  val COLLECTOR_CREATE_RESPONSE = "Collector Create Response"
 
-  val CLIENT_UPDATE_REQUEST = "Client Update Requested"
-  val CLIENT_UPDATE_RESPONSE = "Client Update Response"
+  val COLLECTOR_UPDATE_REQUEST = "Collector Update Requested"
+  val COLLECTOR_UPDATE_RESPONSE = "Collector Update Response"
 
   val TOKEN_CREATE_REQUEST = "Token Create Requested"
   val TOKEN_CREATE_RESPONSE = "Token Create Response"

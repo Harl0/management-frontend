@@ -1,0 +1,48 @@
+@(collector: Seq[Collector])(implicit messages: Messages, request: RequestHeader)
+
+    @main("create.listAll.title") {
+        <div class="container">
+            <div class="column-full">
+                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                <script type="text/javascript" src='@routes.Assets.at("javascripts/deleteCollector.js")'></script>
+                <script type="text/javascript" src='@routes.Assets.at("javascripts/exportCSV.js")'></script>
+            </div>
+            <h1>@Messages("title.home")</h1>
+            <div class="container-fluid">
+                <button id="csv-submit" type="button" class ="btn">@Messages("export.csv")&nbsp;</button>
+
+                <table id ="ResultSet" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Collector Id</th>
+                            <th>Collector Secret</th>
+                            <th>Start Date</th>
+                            <th>
+                                <button id="delete-submit" type="button" class="btn btn-danger">@Messages("collector.delete")</button>
+                                <p> <label><input type="checkbox" id="delete-all"/></label></p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(c <- collector) {
+                        <tr>
+                            <td style="display: none;">@c._id</td>
+                            <td id=collectorName><a href="@routes.CollectorRetrieveController.retrieveCollectorDetail(c._id, None)">@c.collectorName</a></td>
+                            <td id=collectorId>
+                            @c.collectorId </td>
+                            <td id=collectorSecret>
+                            @c.collectorSecret </td>
+                            <td id=collectorServiceStartDate>
+                            @c.serviceStartDate </td>
+                            <td><input id=delete
+                            type="checkbox" name="delete" value="delete"></td>
+                        </tr>
+                    }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    }

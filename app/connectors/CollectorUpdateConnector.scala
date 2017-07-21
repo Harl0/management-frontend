@@ -4,9 +4,9 @@ import com.google.inject.Inject
 import com.typesafe.scalalogging.LazyLogging
 import config.AppConfig
 import helpers.ErrorHelper
-import models.ClientForm.ClientRegistrationForm
+import models.CollectorForm.CollectorRegistrationForm
 import models.Log.processResponse
-import models.{Client, ClientRegistrationResponse}
+import models.{Collector, CollectorRegistrationResponse}
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
@@ -20,46 +20,46 @@ import scala.concurrent.Future
 /**
   * Created by jason on 29/06/17.
   */
-class ClientUpdateConnector @Inject()(ws: WSClient, config: AppConfig, errorHelper: ErrorHelper) extends LazyLogging {
+class CollectorUpdateConnector @Inject()(ws: WSClient, config: AppConfig, errorHelper: ErrorHelper) extends LazyLogging {
 
-  def createClient(client: ClientRegistrationForm): Future[Either[String,ClientRegistrationResponse]]
+  def createCollector(client: CollectorRegistrationForm): Future[Either[String,CollectorRegistrationResponse]]
   = {
     ws
-      .url(s"${config.clientUrl}/create")
+      .url(s"${config.collectorUrl}/create")
       .withHttpHeaders("Accept" -> "application/json")
       .post(Json.toJson(client))
       .map {
         case res if res.status == OK =>
-          Right(res.json.as[ClientRegistrationResponse])
+          Right(res.json.as[CollectorRegistrationResponse])
         case failure@_ =>
-          val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
-          logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
+          val errorMessage = errorHelper.non200Error(failure.status,COLLECTOR_SERVICE)
+          logger.error(processResponse(COLLECTOR_UPDATE_RESPONSE, errorMessage.toString, OK))
           Left(errorMessage)
       }.recover {
       case e =>
         val errorMessage = errorHelper.internalError(e.getMessage)
-        logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
+        logger.error(processResponse(COLLECTOR_UPDATE_RESPONSE, errorMessage.toString, OK))
         Left(errorMessage)
     }
   }
 
-  def updateClient(client: Client): Future[Either[String,Client]]
+  def updateCollector(client: Collector): Future[Either[String,Collector]]
   = {
     ws
-      .url(s"${config.clientUrl}/update")
+      .url(s"${config.collectorUrl}/update")
       .withHttpHeaders("Accept" -> "application/json")
       .post(Json.toJson(client))
       .map {
         case res if res.status == OK =>
-          Right(res.json.as[Client])
+          Right(res.json.as[Collector])
         case failure@_ =>
-          val errorMessage = errorHelper.non200Error(failure.status,CLIENT_SERVICE)
-          logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
+          val errorMessage = errorHelper.non200Error(failure.status,COLLECTOR_SERVICE)
+          logger.error(processResponse(COLLECTOR_UPDATE_RESPONSE, errorMessage.toString, OK))
           Left(errorMessage)
       }.recover {
       case e =>
         val errorMessage = errorHelper.internalError(e.getMessage)
-        logger.error(processResponse(CLIENT_UPDATE_RESPONSE, errorMessage.toString, OK))
+        logger.error(processResponse(COLLECTOR_UPDATE_RESPONSE, errorMessage.toString, OK))
         Left(errorMessage)
     }
   }

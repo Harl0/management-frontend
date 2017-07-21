@@ -1,0 +1,29 @@
+@(
+        collectorId: String,
+        collectorSecret: String,
+        confirmationMessage: String
+)(implicit messages: Messages, request: RequestHeader)
+
+    @main("create.add.confirmation.title") {
+        <div class="container">
+
+            <a href="@routes.CollectorRetrieveController.retrieveCollectorList()" class="link-back">Back</a>
+            <h1>@Messages("create.add.confirmation.title")</h1>
+
+            @if(confirmationMessage.contains("failure")) {
+                <div class="container-fluid">
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Messages(confirmationMessage)
+                    </div>
+                </div>
+            } else {
+                <div class="container-fluid">
+                    <div class="alert alert-info">
+                        <strong>Info!</strong> @Messages(confirmationMessage)
+                    </div>
+                </div>
+            }
+            <p><strong>Collector ID:</strong> @collectorId</p>
+            <p><strong>Collector Secret:</strong> @collectorSecret</p>
+        </div>
+    }

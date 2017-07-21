@@ -1,7 +1,6 @@
 package controllers
 
 import akka.stream.Materializer
-import connectors.TokenConnector
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar

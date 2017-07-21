@@ -4,20 +4,20 @@ import akka.stream.Materializer
 import config.AppConfig
 import helpers.ErrorHelper
 import mockws.{MockWS, Route}
-import models.{Client, ClientRegistrationResponse}
+import models.{Collector, CollectorForm, CollectorRegistrationResponse}
 import org.mockito.Matchers
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
-import play.api.libs.json.Json
 import play.api.mvc.{Action, Results}
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
-
-class ClientRetrieveConnectorSpec extends PlaySpec
+import models.CollectorForm._
+import play.api.libs.json.Json
+class CollectorUpdateConnectorSpec extends PlaySpec
   with MockitoSugar with ScalaFutures with GuiceOneAppPerTest with Results {
 
   implicit lazy val materializer: Materializer = app.materializer
@@ -25,25 +25,25 @@ class ClientRetrieveConnectorSpec extends PlaySpec
   val mockErrorHelper = mock[ErrorHelper]
   val defaultDuration = 5
 
-  "retrieveClientDetail" should {
-    "retrieve a client given a success is returned" in {
+  "createClient" should {
+    "create client given a success is returned" in {
 
       val userRoute: Route = Route {
-        case ("GET", u) => Action {
-          Ok(Json.toJson(Client("chaz","dingle","berry","bob","cat")))
+        case ("POST", u) => Action {
+          Ok(Json.toJson(CollectorRegistrationResponse("chaz","dingle","bob")))
         }
       }
 
-      def ageResponse(): Either[String, Client] = {
+      def ageResponse(): Either[String, CollectorRegistrationResponse] = {
         // we initialize a mock WS with the defined route
         val ws = MockWS(userRoute)
         // we inject the MockWS into GatewayToTest
-        val testedGateway = new ClientRetrieveConnector(ws, mockAppConfig, mockErrorHelper)
-        try Await.result(testedGateway.retrieveClientDetail("chaz"),Duration.apply(defaultDuration, SECONDS))
+        val testedGateway = new CollectorUpdateConnector(ws, mockAppConfig, mockErrorHelper)
+        try Await.result(testedGateway.createCollector(CollectorRegistrationForm("chaz","dingle")),Duration.apply(defaultDuration, SECONDS))
         finally ws.close()
       }
 
-      ageResponse mustBe Right(Client("chaz","dingle","berry","bob","cat"))
+      ageResponse mustBe Right(CollectorRegistrationResponse("chaz","dingle","bob"))
     }
 
     "return error given an error is returned" in {
@@ -52,17 +52,17 @@ class ClientRetrieveConnectorSpec extends PlaySpec
         .thenReturn("fatal chaz dingle error")
 
       val userRoute: Route = Route {
-        case ("GET", u) => Action {
+        case ("POST", u) => Action {
           InternalServerError("dingle chaz")
         }
       }
 
-      def ageResponse(): Either[String, Client] = {
+      def ageResponse(): Either[String, CollectorRegistrationResponse] = {
         // we initialize a mock WS with the defined route
         val ws = MockWS(userRoute)
         // we inject the MockWS into GatewayToTest
-        val testedGateway = new ClientRetrieveConnector(ws, mockAppConfig, mockErrorHelper)
-        try Await.result(testedGateway.retrieveClientDetail("chaz"),Duration.apply(defaultDuration, SECONDS))
+        val testedGateway = new CollectorUpdateConnector(ws, mockAppConfig, mockErrorHelper)
+        try Await.result(testedGateway.createCollector(CollectorRegistrationForm("chaz","dingle")),Duration.apply(defaultDuration, SECONDS))
         finally ws.close()
       }
 
@@ -71,27 +71,27 @@ class ClientRetrieveConnectorSpec extends PlaySpec
 
     //TODO test for exception
 
-    }
+  }
 
-  "retrieveClientList" should {
-    "retrieve a client list given a success is returned" in {
+  "updateClient" should {
+    "create client given a success is returned" in {
 
       val userRoute: Route = Route {
-        case ("GET", u) => Action {
-          Ok(Json.toJson(Seq(Client("chaz","dingle","berry","bob","cat"))))
+        case ("POST", u) => Action {
+          Ok(Json.toJson(Collector("chaz","dingle","berry","bob","cat")))
         }
       }
 
-      def ageResponse(): Either[String, Seq[Client]] = {
+      def ageResponse(): Either[String, Collector] = {
         // we initialize a mock WS with the defined route
         val ws = MockWS(userRoute)
         // we inject the MockWS into GatewayToTest
-        val testedGateway = new ClientRetrieveConnector(ws, mockAppConfig, mockErrorHelper)
-        try Await.result(testedGateway.retrieveClientList,Duration.apply(defaultDuration, SECONDS))
+        val testedGateway = new CollectorUpdateConnector(ws, mockAppConfig, mockErrorHelper)
+        try Await.result(testedGateway.updateCollector(Collector("chaz","dingle","berry","bob","cat")),Duration.apply(defaultDuration, SECONDS))
         finally ws.close()
       }
 
-      ageResponse mustBe  Right(List(Client("chaz","dingle","berry","bob","cat",None,None,None,None)))
+      ageResponse mustBe Right(Collector("chaz","dingle","berry","bob","cat"))
     }
 
     "return error given an error is returned" in {
@@ -100,17 +100,17 @@ class ClientRetrieveConnectorSpec extends PlaySpec
         .thenReturn("fatal chaz dingle error")
 
       val userRoute: Route = Route {
-        case ("GET", u) => Action {
+        case ("POST", u) => Action {
           InternalServerError("dingle chaz")
         }
       }
 
-      def ageResponse(): Either[String, Seq[Client]] = {
+      def ageResponse(): Either[String, Collector] = {
         // we initialize a mock WS with the defined route
         val ws = MockWS(userRoute)
         // we inject the MockWS into GatewayToTest
-        val testedGateway = new ClientRetrieveConnector(ws, mockAppConfig, mockErrorHelper)
-        try Await.result(testedGateway.retrieveClientList,Duration.apply(defaultDuration, SECONDS))
+        val testedGateway = new CollectorUpdateConnector(ws, mockAppConfig, mockErrorHelper)
+        try Await.result(testedGateway.updateCollector(Collector("chaz","dingle","berry","bob","cat")),Duration.apply(defaultDuration, SECONDS))
         finally ws.close()
       }
 

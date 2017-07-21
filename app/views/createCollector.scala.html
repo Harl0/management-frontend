@@ -1,0 +1,40 @@
+@(
+        inputFields: List[CollectorInputFields],
+        form: Form[CollectorForm.CollectorRegistrationForm]
+)(implicit messages: Messages, request: RequestHeader)
+
+    @main("login.title") {
+        <div class="container">
+            <h1>@Messages("login.title")</h1>
+            <div class="container-fluid">
+                @if(form.hasErrors) {
+                    <div class="alert alert-danger">
+                        <strong>This form has errors</strong>
+                        <p>Please correct the following:</p>
+                        <ul>
+                        @form.errors.map { error =>
+                            <li><span class="error-message">@Messages(error.message)</span></li>
+                        }
+                        </ul>
+                    </div>
+                }
+                @helper.form(routes.CollectorUpdateController.postCreateCollector()) {
+                    @helper.CSRF.formField
+
+                    <form class="form-inline">
+                        <div class="form-group">
+
+                        @for(field <- inputFields) {
+                            <div class="form-group">
+                                <label for="@field.fieldText">@field.fieldTitle</label>
+                                <input type="text" class="form-control" id=@field.id placeholder='@field.hintText'
+                                name=@field.fieldText>
+                            </div>
+                        }
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </form>
+                }
+            </div>
+        </div>
+    }

@@ -1,9 +1,9 @@
 package controllers
 
 import akka.stream.Materializer
-import connectors.{ClientRetrieveConnector, ClientUpdateConnector}
-import helpers.ClientHelper
-import models.{Client, ClientRegistrationResponse}
+import connectors.{CollectorRetrieveConnector, CollectorUpdateConnector}
+import helpers.CollectorHelper
+import models.{Collector, CollectorRegistrationResponse}
 import org.apache.http.HttpStatus
 import org.mockito.Matchers
 import org.mockito.Mockito._
@@ -18,24 +18,24 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class ClientUpdateControllerSpec extends PlaySpec
+class CollectorUpdateControllerSpec extends PlaySpec
   with MockitoSugar with ScalaFutures with GuiceOneAppPerTest with Results {
 
   implicit lazy val materializer: Materializer = app.materializer
-  val mockUpdateConnector = mock[ClientUpdateConnector]
-  val mockRetrieveConnector = mock[ClientRetrieveConnector]
-  val mockHelper = mock[ClientHelper]
+  val mockUpdateConnector = mock[CollectorUpdateConnector]
+  val mockRetrieveConnector = mock[CollectorRetrieveConnector]
+  val mockHelper = mock[CollectorHelper]
 
   "postCreateClient" should {
     "return the create client page" in {
 
-      when(mockUpdateConnector.createClient(Matchers.any()))
-        .thenReturn(Future.successful(Right(ClientRegistrationResponse.buildEmptyClientRegistrationResponse)))
+      when(mockUpdateConnector.createCollector(Matchers.any()))
+        .thenReturn(Future.successful(Right(CollectorRegistrationResponse.buildEmptyCollectorRegistrationResponse)))
 
-      val clientRetrieveController = new ClientUpdateController(
+      val clientRetrieveController = new CollectorUpdateController(
         stubControllerComponents(),mockUpdateConnector,mockRetrieveConnector,mockHelper)
 
-      val action = clientRetrieveController.postCreateClient().apply(
+      val action = clientRetrieveController.postCreateCollector().apply(
         FakeRequest().withFormUrlEncodedBody(
           "clientName" -> "chaz dingle",
           "redirect_uri" -> "/test"
@@ -48,13 +48,13 @@ class ClientUpdateControllerSpec extends PlaySpec
 
     "return the error page given an error" in {
 
-      when(mockUpdateConnector.createClient(Matchers.any()))
+      when(mockUpdateConnector.createCollector(Matchers.any()))
         .thenReturn(Future.successful(Left("bad error")))
 
-      val clientRetrieveController = new ClientUpdateController(
+      val clientRetrieveController = new CollectorUpdateController(
         stubControllerComponents(),mockUpdateConnector,mockRetrieveConnector,mockHelper)
 
-      val action = clientRetrieveController.postCreateClient().apply(
+      val action = clientRetrieveController.postCreateCollector().apply(
         FakeRequest().withFormUrlEncodedBody(
           "clientName" -> "chaz dingle",
           "redirect_uri" -> "/test"
@@ -70,13 +70,13 @@ class ClientUpdateControllerSpec extends PlaySpec
   "postUpdateClient" should {
     "return the update client page" in {
 
-      when(mockUpdateConnector.updateClient(Matchers.any[Client]))
-        .thenReturn(Future.successful(Right(Client.buildEmptyClient)))
+      when(mockUpdateConnector.updateCollector(Matchers.any[Collector]))
+        .thenReturn(Future.successful(Right(Collector.buildEmptyCollector)))
 
-      val clientRetrieveController = new ClientUpdateController(
+      val clientRetrieveController = new CollectorUpdateController(
         stubControllerComponents(),mockUpdateConnector,mockRetrieveConnector,mockHelper)
 
-      val action = clientRetrieveController.postCreateClient().apply(
+      val action = clientRetrieveController.postCreateCollector().apply(
         FakeRequest().withFormUrlEncodedBody(
           "clientName" -> "chaz dingle",
           "redirect_uri" -> "test"
@@ -87,13 +87,13 @@ class ClientUpdateControllerSpec extends PlaySpec
 
     "return the error page given an error" in {
 
-      when(mockUpdateConnector.updateClient(Matchers.any[Client]))
+      when(mockUpdateConnector.updateCollector(Matchers.any[Collector]))
         .thenReturn(Future.successful(Left("bad error")))
 
-      val clientRetrieveController = new ClientUpdateController(
+      val clientRetrieveController = new CollectorUpdateController(
         stubControllerComponents(),mockUpdateConnector,mockRetrieveConnector,mockHelper)
 
-      val action = clientRetrieveController.postCreateClient().apply(
+      val action = clientRetrieveController.postCreateCollector().apply(
         FakeRequest().withFormUrlEncodedBody(
           "clientName" -> "chaz dingle",
           "redirect_uri" -> "test"
