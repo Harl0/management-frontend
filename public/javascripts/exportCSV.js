@@ -3,38 +3,38 @@
  */
 $(document).ready(function () {
     $("#csv-submit").click(function () {
-        var clientIdArray = [];
-        var clientNameArray = [];
+        var collectorIdArray = [];
+        var collectorNameArray = [];
 
 
-        var clientIdGeneration = $('#clientId').filter(function () {
+        var collectorIdGeneration = $('#collectorId').filter(function () {
             $('[id="' + this.id + '"]').each(function(){
-                var clientIdValue = $(this).text();
-                if(clientIdValue.length > 0){
-                    clientIdArray.push(clientIdValue);
+                var collectorIdValue = $(this).text();
+                if(collectorIdValue.length > 0){
+                    collectorIdArray.push(collectorIdValue);
                 } else {
-                    clientIdArray.push(" ");
+                    collectorIdArray.push(" ");
                 }
             });
         });
 
-        var clientNameGeneration = $('#clientName').filter(function () {
+        var collectorNameGeneration = $('#collectorName').filter(function () {
             $('[id="' + this.id + '"]').each(function(){
-                var clientNameValue = $(this).text();
-                if(clientNameValue.length > 0){
-                    clientNameArray.push(clientNameValue);
+                var collectorNameValue = $(this).text();
+                if(collectorNameValue.length > 0){
+                    collectorNameArray.push(collectorNameValue);
                 } else {
-                    clientNameArray.push(" ");
+                    collectorNameArray.push(" ");
                 }
             });
         });
 
         var data = [];
-        data += ["Client ID", "Client Name"];
+        data += ["Collector ID", "Collector Name"];
 
-        clientIdArray.forEach(function(infoArray, index){
-            data += clientIdArray[index] + ",";
-            data += clientNameArray[index] + ",";
+        collectorIdArray.forEach(function(infoArray, index){
+            data += collectorIdArray[index] + ",";
+            data += collectorNameArray[index] + ",";
         });
 
             var today = new Date();
